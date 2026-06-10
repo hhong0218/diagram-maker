@@ -13,6 +13,7 @@ const App = {
   resizeDrag: null,
   editor: null,
   _rendered: false,
+  _styleGesture: false,
 
   init() {
     Canvas.init();
@@ -57,7 +58,7 @@ const App = {
     this.state.selectedIds = [];
     this.state.selectedConnIds = [];
     Canvas.setState(data.viewport);
-    History.reset(this._snapshot());
+    History.reset();
     this._updateModeUI();
     this.render();
     this._checkBadge();
@@ -127,7 +128,7 @@ const App = {
     this.state.connections = data.connections;
     this.state.selectedIds = [];
     this.state.selectedConnIds = [];
-    History.reset(this._snapshot());
+    History.reset();
     Canvas.fitToContent(this.state.nodes);
     this.render();
     this._checkBadge();
@@ -156,7 +157,7 @@ const App = {
     if (mode === 'mindmap') {
       Mindmap.initCenter(this.state.nodes, this.state.connections);
     }
-    History.reset(this._snapshot());
+    History.reset();
     Canvas.fitToContent(this.state.nodes);
     this._updateModeUI();
     this.render();
@@ -176,6 +177,12 @@ const App = {
       nodeLayer.appendChild(Nodes.render(n, this.state.selectedIds.includes(n.id)));
     });
     this._rendered = true;
+    this._updateUndoButtons();
+  },
+
+  _updateUndoButtons() {
+    document.getElementById('btn-undo').disabled = !History.canUndo();
+    document.getElementById('btn-redo').disabled = !History.canRedo();
   },
 
   _checkBadge() {
@@ -221,14 +228,25 @@ const App = {
       });
     });
 
-    document.getElementById('fill-color').addEventListener('input', e => this._applyStyle('fillColor', e.target.value));
-    document.getElementById('stroke-color').addEventListener('input', e => this._applyStyle('strokeColor', e.target.value));
-    document.getElementById('conn-color').addEventListener('input', e => this._applyConnStyle('color', e.target.value));
-    document.getElementById('conn-type').addEventListener('change', e => this._applyConnStyle('type', e.target.value));
+    // Color pickers fire 'input' continuously while dragging: save history
+    // only once per gesture ('change' fires when the picker is dismissed).
+    [['fill-color', 'fillColor'], ['stroke-color', 'strokeColor']].forEach(([id, prop]) => {
+      const input = document.getElementById(id);
+      input.addEventListener('input', e => this._applyStyle(prop, e.target.value));
+      input.addEventListener('change', () => { this._styleGesture = false; });
+    });
+    const connColor = document.getElementById('conn-color');
+    connColor.addEventListener('input', e => this._applyConnStyle('color', e.target.value));
+    connColor.addEventListener('change', () => { this._styleGesture = false; });
+    document.getElementById('conn-type').addEventListener('change', e => {
+      this._applyConnStyle('type', e.target.value);
+      this._styleGesture = false;
+    });
     document.getElementById('conn-arrow').addEventListener('change', e => {
       const v = e.target.value;
       this._applyConnStyle('arrowEnd', v === 'end' || v === 'both');
       this._applyConnStyle('arrowStart', v === 'both');
+      this._styleGesture = false;
     });
 
     document.getElementById('btn-export-png').addEventListener('click', () => Export.toPNG(false));
@@ -251,7 +269,7 @@ const App = {
         if (this.state.mode === 'mindmap') {
           Mindmap.initCenter(this.state.nodes, this.state.connections);
         }
-        History.reset(this._snapshot());
+        History.reset();
         Canvas.fitToContent(this.state.nodes);
         this.render();
       }
@@ -336,7 +354,6 @@ const App = {
         return;
       }
 
-      const connG = target.closest('[data-id]');
       if (target.classList.contains('conn-path') || target.classList.contains('conn-label')) {
         const id = target.closest('g').dataset.id;
         this.state.selectedConnIds = [id];
@@ -392,6 +409,7 @@ const App = {
 
       if (this.resizeDrag) {
         const { node, startX, startY, origW, origH } = this.resizeDrag;
+        this.resizeDrag.moved = true;
         node.width = Math.max(40, origW + (world.x - startX));
         node.height = Math.max(30, origH + (world.y - startY));
         this.render();
@@ -428,6 +446,11 @@ const App = {
         document.getElementById('overlay-layer').innerHTML = '';
         this.render();
       }
+      // A click that never moved should not consume an undo step.
+      if ((this.drag && !this.drag.moved) || (this.resizeDrag && !this.resizeDrag.moved)) {
+        History.discardLast();
+        this._updateUndoButtons();
+      }
       this.drag = null;
       this.resizeDrag = null;
     });
@@ -461,7 +484,7 @@ const App = {
 
   _bindKeyboard() {
     document.addEventListener('keydown', e => {
-      if (e.target.matches('input, textarea')) return;
+      if (e.target.matches('input, textarea, select')) return;
 
       if (e.ctrlKey && e.key === 'z') { e.preventDefault(); this.undo(); }
       if (e.ctrlKey && e.key === 'y') { e.preventDefault(); this.redo(); }
@@ -505,9 +528,12 @@ const App = {
     ta.select();
 
     const finish = () => {
-      this._saveHistory();
-      Nodes.updateText(node, ta.value || '텍스트');
-      if (this.state.mode === 'mindmap') Nodes.autoSizeMindmap(node);
+      const newText = ta.value || '텍스트';
+      if (newText !== node.text) {
+        this._saveHistory();
+        Nodes.updateText(node, newText);
+        if (this.state.mode === 'mindmap') Nodes.autoSizeMindmap(node);
+      }
       ta.remove();
       this.editor = null;
       this.render();
@@ -554,7 +580,7 @@ const App = {
 
   _applyStyle(prop, value) {
     if (!this.state.selectedIds.length) return;
-    this._saveHistory();
+    if (!this._styleGesture) { this._saveHistory(); this._styleGesture = true; }
     this.state.selectedIds.forEach(id => {
       const n = this.state.nodes.find(x => x.id === id);
       if (n) n[prop] = value;
@@ -564,7 +590,7 @@ const App = {
 
   _applyConnStyle(prop, value) {
     if (!this.state.selectedConnIds.length) return;
-    this._saveHistory();
+    if (!this._styleGesture) { this._saveHistory(); this._styleGesture = true; }
     this.state.selectedConnIds.forEach(id => {
       const c = this.state.connections.find(x => x.id === id);
       if (c) c[prop] = value;
@@ -573,7 +599,7 @@ const App = {
   },
 
   undo() {
-    const snap = History.undo();
+    const snap = History.undo(this._snapshot());
     if (!snap) return;
     this.state.nodes = snap.nodes;
     this.state.connections = snap.connections;
@@ -585,7 +611,7 @@ const App = {
   },
 
   redo() {
-    const snap = History.redo();
+    const snap = History.redo(this._snapshot());
     if (!snap) return;
     this.state.nodes = snap.nodes;
     this.state.connections = snap.connections;
@@ -640,11 +666,26 @@ const App = {
   deleteSelected() {
     if (!this.state.selectedIds.length && !this.state.selectedConnIds.length) return;
     this._saveHistory();
-    this.state.nodes = this.state.nodes.filter(n => !this.state.selectedIds.includes(n.id));
+    const ids = new Set(this.state.selectedIds);
+    // In mindmap mode, deleting a branch removes its whole subtree so no
+    // node is left orphaned with a dangling parentId.
+    if (this.state.mode === 'mindmap') {
+      let grew = true;
+      while (grew) {
+        grew = false;
+        this.state.nodes.forEach(n => {
+          if (n.parentId && ids.has(n.parentId) && !ids.has(n.id)) {
+            ids.add(n.id);
+            grew = true;
+          }
+        });
+      }
+    }
+    this.state.nodes = this.state.nodes.filter(n => !ids.has(n.id));
     this.state.connections = this.state.connections.filter(c =>
       !this.state.selectedConnIds.includes(c.id) &&
-      !this.state.selectedIds.includes(c.fromId) &&
-      !this.state.selectedIds.includes(c.toId));
+      !ids.has(c.fromId) &&
+      !ids.has(c.toId));
     this.state.selectedIds = [];
     this.state.selectedConnIds = [];
     this.render();

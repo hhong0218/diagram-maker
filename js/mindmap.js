@@ -33,21 +33,36 @@ const Mindmap = {
     center.x = 0;
     center.y = 0;
 
-    const layoutSide = (parentId, side, depth) => {
-      const children = nodes.filter(n => n.parentId === parentId && (n.side === side || (!n.side && side === 'right')));
-      const spacing = 70;
-      const totalH = children.length * spacing;
-      children.forEach((child, i) => {
+    const spacing = 70;
+    const gapX = 60;
+    const childrenOf = (parentId, side) =>
+      nodes.filter(n => n.parentId === parentId && (n.side === side || (!n.side && side === 'right')));
+
+    // Height a node's subtree needs so sibling branches never overlap.
+    const subtreeHeight = (node, side) => {
+      const children = childrenOf(node.id, side);
+      if (!children.length) return spacing;
+      return Math.max(spacing, children.reduce((s, c) => s + subtreeHeight(c, side), 0));
+    };
+
+    const layoutSide = (parent, side) => {
+      const children = childrenOf(parent.id, side);
+      if (!children.length) return;
+      const parentCY = parent.y + parent.height / 2;
+      const total = children.reduce((s, c) => s + subtreeHeight(c, side), 0);
+      let cursor = parentCY - total / 2;
+      children.forEach(child => {
         Nodes.autoSizeMindmap(child);
-        const xOff = (side === 'right' ? 1 : -1) * (180 + depth * 40);
-        child.x = center.x + xOff + (side === 'right' ? 0 : -child.width);
-        child.y = center.y + (i - (children.length - 1) / 2) * spacing;
-        layoutSide(child.id, side, depth + 1);
+        const h = subtreeHeight(child, side);
+        child.x = side === 'right' ? parent.x + parent.width + gapX : parent.x - gapX - child.width;
+        child.y = cursor + h / 2 - child.height / 2;
+        cursor += h;
+        layoutSide(child, side);
       });
     };
 
-    layoutSide(center.id, 'left', 0);
-    layoutSide(center.id, 'right', 0);
+    layoutSide(center, 'left');
+    layoutSide(center, 'right');
   },
 
   initCenter(nodes, connections) {

@@ -91,7 +91,7 @@ const Canvas = {
     }, { passive: false });
 
     window.addEventListener('keydown', e => {
-      if (e.code === 'Space' && !e.target.matches('input, textarea')) {
+      if (e.code === 'Space' && !e.target.matches('input, textarea, select, button')) {
         e.preventDefault();
         this.spaceHeld = true;
         this.wrap.classList.add('panning');

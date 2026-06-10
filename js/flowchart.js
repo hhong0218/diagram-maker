@@ -14,21 +14,24 @@ const Flowchart = {
     const queue = nodes.filter(n => inDeg[n.id] === 0).map(n => n.id);
     const visited = new Set();
 
-    while (queue.length) {
+    while (visited.size < nodes.length) {
+      if (!queue.length) {
+        // Cycle: seed with the next unvisited node, keeping its computed layer.
+        const next = nodes.find(n => !visited.has(n.id));
+        if (!next) break;
+        queue.push(next.id);
+      }
       const id = queue.shift();
       if (visited.has(id)) continue;
       visited.add(id);
       const layer = layers[id] || 0;
       (adj[id] || []).forEach(childId => {
+        if (visited.has(childId)) return; // back-edge in a cycle
         layers[childId] = Math.max(layers[childId] || 0, layer + 1);
         inDeg[childId]--;
         if (inDeg[childId] <= 0) queue.push(childId);
       });
     }
-
-    nodes.forEach(n => {
-      if (!visited.has(n.id)) layers[n.id] = 0;
-    });
 
     const byLayer = {};
     nodes.forEach(n => {

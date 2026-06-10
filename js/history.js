@@ -1,4 +1,7 @@
 const History = {
+  // Stack of past states. App pushes a snapshot BEFORE each mutation,
+  // so stack[index] is always the state to restore on undo. undo/redo
+  // receive the current live state so it can be re-entered for redo.
   stack: [],
   index: -1,
   maxSize: 50,
@@ -11,23 +14,35 @@ const History = {
     this.index = this.stack.length - 1;
   },
 
-  undo() {
-    if (this.index <= 0) return null;
-    this.index--;
-    return Utils.deepClone(this.stack[this.index]);
+  // Drop the last pushed snapshot (e.g. a drag that never moved).
+  discardLast() {
+    if (this.index >= 0 && this.index === this.stack.length - 1) {
+      this.stack.pop();
+      this.index--;
+    }
   },
 
-  redo() {
+  undo(current) {
+    if (this.index < 0) return null;
+    const snap = this.stack[this.index];
+    this.stack[this.index] = Utils.deepClone(current);
+    this.index--;
+    return Utils.deepClone(snap);
+  },
+
+  redo(current) {
     if (this.index >= this.stack.length - 1) return null;
     this.index++;
-    return Utils.deepClone(this.stack[this.index]);
+    const snap = this.stack[this.index];
+    this.stack[this.index] = Utils.deepClone(current);
+    return Utils.deepClone(snap);
   },
 
-  reset(state) {
-    this.stack = [Utils.deepClone(state)];
-    this.index = 0;
+  reset() {
+    this.stack = [];
+    this.index = -1;
   },
 
-  canUndo() { return this.index > 0; },
+  canUndo() { return this.index >= 0; },
   canRedo() { return this.index < this.stack.length - 1; }
 };
