@@ -64,10 +64,7 @@ const Connections = {
     path.setAttribute('class', 'conn-path' + (selected ? ' selected' : ''));
     path.setAttribute('d', this.pathD(conn, nodes));
     path.setAttribute('stroke', conn.color);
-    let markers = '';
-    if (conn.arrowEnd) markers += 'url(#arrow-end) ';
-    if (conn.arrowStart) markers += 'url(#arrow-start) ';
-    if (markers) path.setAttribute('marker-end', conn.arrowEnd ? 'url(#arrow-end)' : '');
+    if (conn.arrowEnd) path.setAttribute('marker-end', 'url(#arrow-end)');
     if (conn.arrowStart) path.setAttribute('marker-start', 'url(#arrow-start)');
     g.appendChild(path);
 

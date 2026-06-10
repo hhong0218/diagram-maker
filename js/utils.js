@@ -15,6 +15,15 @@ const Utils = {
     return JSON.parse(JSON.stringify(obj));
   },
 
+  escapeXML(value) {
+    return String(value)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#39;');
+  },
+
   getNodeCenter(node) {
     return { x: node.x + node.width / 2, y: node.y + node.height / 2 };
   },
@@ -40,9 +49,13 @@ const Utils = {
     return dy > 0 ? 'bottom' : 'top';
   },
 
+  _measureCtx: null,
+
   measureText(text, fontSize = 13) {
-    const canvas = document.createElement('canvas');
-    const ctx = canvas.getContext('2d');
+    if (!Utils._measureCtx) {
+      Utils._measureCtx = document.createElement('canvas').getContext('2d');
+    }
+    const ctx = Utils._measureCtx;
     ctx.font = `${fontSize}px sans-serif`;
     const lines = text.split('\n');
     let maxW = 0;

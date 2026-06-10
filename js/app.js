@@ -136,7 +136,9 @@ const App = {
 
   _updateModeUI() {
     document.querySelectorAll('.mode-tab').forEach(t => {
-      t.classList.toggle('active', t.dataset.mode === this.state.mode);
+      const active = t.dataset.mode === this.state.mode;
+      t.classList.toggle('active', active);
+      t.setAttribute('aria-pressed', String(active));
     });
     const isMM = this.state.mode === 'mindmap';
     document.getElementById('shape-grid').classList.toggle('hidden', isMM);

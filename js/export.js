@@ -28,8 +28,8 @@ const Export = {
           const data = JSON.parse(e.target.result);
           resolve({
             mode: data.mode || 'flowchart',
-            nodes: data.nodes || [],
-            connections: data.connections || [],
+            nodes: Array.isArray(data.nodes) ? data.nodes : [],
+            connections: Array.isArray(data.connections) ? data.connections : [],
             viewport: data.viewport || { x: 0, y: 0, zoom: 1 }
           });
         } catch (err) { reject(err); }
@@ -40,6 +40,7 @@ const Export = {
   },
 
   toSVG(state) {
+    const esc = Utils.escapeXML;
     const bounds = Canvas.getBounds(state.nodes);
     const pad = 40;
     const w = bounds.width + pad * 2;
@@ -47,29 +48,50 @@ const Export = {
     const offX = -bounds.x + pad;
     const offY = -bounds.y + pad;
 
-    let svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${w}" height="${h}" viewBox="0 0 ${w} ${h}">`;
-    svg += `<defs>
-      <marker id="arrow-end" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="context-stroke"/></marker>
-      <marker id="arrow-start" markerWidth="10" markerHeight="7" refX="1" refY="3.5" orient="auto"><polygon points="10 0, 0 3.5, 10 7" fill="context-stroke"/></marker>
-    </defs>`;
+    // One marker per arrow color: context-stroke is not supported by
+    // most external viewers (PowerPoint, Inkscape 등).
+    const markerIds = {};
+    let defs = '';
+    state.connections.forEach(c => {
+      if ((c.arrowEnd || c.arrowStart) && !(c.color in markerIds)) {
+        const idx = Object.keys(markerIds).length;
+        markerIds[c.color] = idx;
+        defs += `<marker id="ae${idx}" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="${esc(c.color)}"/></marker>`;
+        defs += `<marker id="as${idx}" markerWidth="10" markerHeight="7" refX="1" refY="3.5" orient="auto"><polygon points="10 0, 0 3.5, 10 7" fill="${esc(c.color)}"/></marker>`;
+      }
+    });
+
+    let svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${w}" height="${h}" viewBox="0 0 ${w} ${h}" font-family="sans-serif">`;
+    svg += `<defs>${defs}</defs>`;
     svg += `<g transform="translate(${offX},${offY})">`;
 
     state.connections.forEach(c => {
       const d = Connections.pathD(c, state.nodes);
-      let attrs = `stroke="${c.color}" fill="none" stroke-width="2"`;
-      if (c.arrowEnd) attrs += ' marker-end="url(#arrow-end)"';
-      if (c.arrowStart) attrs += ' marker-start="url(#arrow-start)"';
+      let attrs = `stroke="${esc(c.color)}" fill="none" stroke-width="2"`;
+      if (c.arrowEnd) attrs += ` marker-end="url(#ae${markerIds[c.color]})"`;
+      if (c.arrowStart) attrs += ` marker-start="url(#as${markerIds[c.color]})"`;
       svg += `<path d="${d}" ${attrs}/>`;
       if (c.label) {
         const pos = Connections.labelPos(c, state.nodes);
-        svg += `<text x="${pos.x}" y="${pos.y}" fill="#a0aec0" font-size="11" text-anchor="middle">${c.label}</text>`;
+        svg += `<text x="${pos.x}" y="${pos.y}" fill="#a0aec0" font-size="11" text-anchor="middle">${esc(c.label)}</text>`;
       }
     });
 
     state.nodes.forEach(n => {
       const d = Nodes.shapePath(n);
-      svg += `<path d="${d}" fill="${n.fillColor}" stroke="${n.strokeColor}" stroke-width="2"/>`;
-      svg += `<text x="${n.x + n.width / 2}" y="${n.y + n.height / 2}" fill="#f7fafc" font-size="13" text-anchor="middle" dominant-baseline="central">${n.text.replace(/&/g, '&amp;').replace(/</g, '&lt;')}</text>`;
+      const cx = n.x + n.width / 2;
+      const cy = n.y + n.height / 2;
+      svg += `<path d="${d}" fill="${esc(n.fillColor)}" stroke="${esc(n.strokeColor)}" stroke-width="2"/>`;
+      const lines = String(n.text).split('\n');
+      let content;
+      if (lines.length === 1) {
+        content = esc(n.text);
+      } else {
+        // Same multi-line layout as the live renderer (js/nodes.js)
+        content = lines.map((line, i) =>
+          `<tspan x="${cx}" dy="${i === 0 ? -(lines.length - 1) * 8 : 16}">${esc(line)}</tspan>`).join('');
+      }
+      svg += `<text x="${cx}" y="${cy}" fill="#f7fafc" font-size="13" text-anchor="middle" dominant-baseline="central">${content}</text>`;
     });
 
     svg += '</g></svg>';
@@ -94,9 +116,32 @@ const Export = {
     }
   },
 
+  _h2cPromise: null,
+
+  // html2canvas is only needed for PNG export: load it on demand so the
+  // page itself never blocks on (or breaks from) the CDN.
+  _loadHtml2Canvas() {
+    if (typeof html2canvas !== 'undefined') return Promise.resolve();
+    if (this._h2cPromise) return this._h2cPromise;
+    this._h2cPromise = new Promise((resolve, reject) => {
+      const s = document.createElement('script');
+      s.src = 'https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js';
+      s.onload = resolve;
+      s.onerror = () => {
+        this._h2cPromise = null;
+        s.remove();
+        reject(new Error('html2canvas CDN load failed'));
+      };
+      document.head.appendChild(s);
+    });
+    return this._h2cPromise;
+  },
+
   async _capture(el, filename) {
-    if (typeof html2canvas === 'undefined') {
-      Utils.showToast('PNG 저장을 위해 html2canvas를 로드 중입니다...');
+    try {
+      await this._loadHtml2Canvas();
+    } catch (e) {
+      Utils.showToast('PNG 모듈을 불러오지 못했습니다. 네트워크 확인 후 다시 시도하거나 SVG 저장을 이용하세요.', 4000);
       return;
     }
     try {
@@ -106,6 +151,7 @@ const Export = {
         ignoreElements: el2 => el2.classList && (el2.classList.contains('zoom-controls') || el2.classList.contains('badge'))
       });
       canvas.toBlob(blob => {
+        if (!blob) { Utils.showToast('PNG 저장 실패'); return; }
         const a = document.createElement('a');
         a.href = URL.createObjectURL(blob);
         a.download = filename;
