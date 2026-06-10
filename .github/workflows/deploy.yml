@@ -18,4 +18,4 @@ jobs:
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: 75c4898a1b8e3213936e24322485e741
-          command: pages deploy . --project-name=diagram-maker --branch=main
+          command: pages deploy . --project-name=diagram-maker --branch=main --commit-dirty=true
