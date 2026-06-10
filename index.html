@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>무료 플로우차트 마인드맵 만들기 | 회원가입 없이 즉시 시작</title>
+  <meta name="description" content="브라우저에서 바로 플로우차트와 마인드맵을 무료로 만드세요. 회원가입 불필요. 업무 프로세스, 기획서, 발표 자료에 바로 활용.">
+  <meta name="keywords" content="플로우차트 만들기, 마인드맵 만들기, 플로우차트 무료, 순서도 제작">
+  <meta property="og:title" content="도식화 메이커 - 무료 플로우차트 & 마인드맵">
+  <meta property="og:description" content="회원가입 없이 브라우저에서 바로 다이어그램을 만드세요.">
+  <meta property="og:type" content="website">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header class="header">
+    <div class="header-inner">
+      <h1 class="logo">도식화 메이커</h1>
+      <nav class="mode-tabs">
+        <button class="mode-tab active" data-mode="flowchart">플로우차트</button>
+        <button class="mode-tab" data-mode="mindmap">마인드맵</button>
+      </nav>
+      <div class="header-actions">
+        <button class="btn btn-ghost" id="btn-undo" title="Ctrl+Z">↩ 되돌리기</button>
+        <button class="btn btn-ghost" id="btn-redo" title="Ctrl+Y">↪ 다시실행</button>
+        <button class="btn btn-primary" id="btn-share">공유 링크 복사</button>
+      </div>
+    </div>
+    <div class="ad-slot ad-header" aria-label="광고 영역">광고 영역</div>
+  </header>
+
+  <main class="workspace">
+    <aside class="panel panel-left" id="panel-left">
+      <section class="panel-section">
+        <h3>도형 선택</h3>
+        <div class="shape-grid" id="shape-grid">
+          <button class="shape-btn active" data-shape="rectangle" title="사각형 (일반 공정)">
+            <svg viewBox="0 0 40 30"><rect x="2" y="2" width="36" height="26" fill="none" stroke="currentColor" stroke-width="2"/></svg>
+            <span>사각형</span>
+          </button>
+          <button class="shape-btn" data-shape="rounded" title="둥근 사각형 (시작/끝)">
+            <svg viewBox="0 0 40 30"><rect x="2" y="2" width="36" height="26" rx="8" fill="none" stroke="currentColor" stroke-width="2"/></svg>
+            <span>시작/끝</span>
+          </button>
+          <button class="shape-btn" data-shape="diamond" title="마름모 (조건/분기)">
+            <svg viewBox="0 0 40 30"><polygon points="20,2 38,15 20,28 2,15" fill="none" stroke="currentColor" stroke-width="2"/></svg>
+            <span>조건</span>
+          </button>
+          <button class="shape-btn" data-shape="circle" title="원 (연결점)">
+            <svg viewBox="0 0 40 30"><circle cx="20" cy="15" r="13" fill="none" stroke="currentColor" stroke-width="2"/></svg>
+            <span>연결점</span>
+          </button>
+          <button class="shape-btn" data-shape="parallelogram" title="평행사변형 (입력/출력)">
+            <svg viewBox="0 0 40 30"><polygon points="8,2 38,2 32,28 2,28" fill="none" stroke="currentColor" stroke-width="2"/></svg>
+            <span>입출력</span>
+          </button>
+          <button class="shape-btn" data-shape="document" title="문서">
+            <svg viewBox="0 0 40 30"><path d="M4,2 H30 L36,8 V28 H4 Z" fill="none" stroke="currentColor" stroke-width="2"/><line x1="30" y1="2" x2="30" y2="8" stroke="currentColor" stroke-width="2"/><line x1="30" y1="8" x2="36" y2="8" stroke="currentColor" stroke-width="2"/></svg>
+            <span>문서</span>
+          </button>
+        </div>
+      </section>
+      <section class="panel-section mindmap-only hidden" id="mindmap-tools">
+        <h3>마인드맵</h3>
+        <button class="btn btn-block" id="btn-add-child">+ 자식 노드 추가 (Tab)</button>
+      </section>
+      <section class="panel-section">
+        <h3>캔버스</h3>
+        <label class="toggle"><input type="checkbox" id="toggle-grid" checked> 격자 표시</label>
+        <button class="btn btn-block" id="btn-auto-align">노드 자동 정렬</button>
+        <button class="btn btn-block" id="btn-fit-view">전체 보기 (Ctrl+0)</button>
+      </section>
+      <section class="panel-section" id="node-style-panel">
+        <h3>선택 항목 스타일</h3>
+        <label>채우기 <input type="color" id="fill-color" value="#2d3748"></label>
+        <label>테두리 <input type="color" id="stroke-color" value="#63b3ed"></label>
+        <label>연결선 색 <input type="color" id="conn-color" value="#a0aec0"></label>
+        <label>연결선 종류
+          <select id="conn-type">
+            <option value="orthogonal">꺾인선</option>
+            <option value="straight">직선</option>
+            <option value="curved">곡선</option>
+          </select>
+        </label>
+        <label>화살표
+          <select id="conn-arrow">
+            <option value="end">단방향 →</option>
+            <option value="both">양방향 ↔</option>
+            <option value="none">없음</option>
+          </select>
+        </label>
+      </section>
+    </aside>
+
+    <div class="canvas-wrap" id="canvas-wrap">
+      <svg id="diagram-svg" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <pattern id="grid-pattern" width="20" height="20" patternUnits="userSpaceOnUse">
+            <circle cx="1" cy="1" r="1" fill="#4a5568"/>
+          </pattern>
+          <marker id="arrow-end" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+            <polygon points="0 0, 10 3.5, 0 7" fill="context-stroke"/>
+          </marker>
+          <marker id="arrow-start" markerWidth="10" markerHeight="7" refX="1" refY="3.5" orient="auto">
+            <polygon points="10 0, 0 3.5, 10 7" fill="context-stroke"/>
+          </marker>
+        </defs>
+        <g id="viewport">
+          <rect id="grid-bg" class="grid-bg" x="-5000" y="-5000" width="10000" height="10000" fill="url(#grid-pattern)"/>
+          <g id="connections-layer"></g>
+          <g id="nodes-layer"></g>
+          <g id="overlay-layer"></g>
+        </g>
+      </svg>
+      <div class="zoom-controls">
+        <button id="zoom-in" title="Ctrl++">+</button>
+        <span id="zoom-level">100%</span>
+        <button id="zoom-out" title="Ctrl+-">−</button>
+      </div>
+      <div class="badge hidden" id="complexity-badge">🎉 대단해요! 복잡한 다이어그램을 완성했군요</div>
+    </div>
+
+    <aside class="panel panel-right" id="panel-right">
+      <section class="panel-section">
+        <h3>템플릿</h3>
+        <div class="template-list" id="template-list"></div>
+      </section>
+      <section class="panel-section">
+        <h3>저장 /보내기</h3>
+        <button class="btn btn-block" id="btn-export-png">PNG 저장 (현재 뷰)</button>
+        <button class="btn btn-block" id="btn-export-png-full">PNG 저장 (전체)</button>
+        <button class="btn btn-block" id="btn-export-svg">SVG 저장</button>
+        <button class="btn btn-block" id="btn-export-json">JSON 저장</button>
+        <label class="btn btn-block btn-file">
+          JSON 불러오기
+          <input type="file" id="import-json" accept=".json" hidden>
+        </label>
+      </section>
+      <div class="guide-tip">
+        <p>💡 <strong>발표 팁:</strong> PNG로 저장하고 발표자료에 붙여넣기 하세요!</p>
+      </div>
+      <div class="ad-slot ad-sidebar" aria-label="광고 영역">광고 영역</div>
+    </aside>
+  </main>
+
+  <div class="mobile-toolbar" id="mobile-toolbar">
+    <button data-action="undo">↩</button>
+    <button data-action="add">+</button>
+    <button data-action="export">💾</button>
+    <button data-action="fit">⊡</button>
+    <button data-action="share">🔗</button>
+  </div>
+
+  <footer class="footer">
+    <div class="ad-slot ad-footer" aria-label="광고 영역">광고 영역</div>
+    <article class="guide-content">
+      <h2>플로우차트와 마인드맵 가이드</h2>
+
+      <h3>플로우차트와 마인드맵의 차이</h3>
+      <p>플로우차트는 업무 프로세스나 의사결정 흐름을 순서대로 표현하는 도구입니다. 시작부터 끝까지 단계별 진행을 시각화하여 누구나 같은 흐름을 이해할 수 있게 합니다. 반면 마인드맵은 하나의 중심 주제에서 가지처럼 아이디어를 확장하는 방식으로, 브레인스토밍이나 개념 정리에 적합합니다. 플로우차트는 '어떻게 진행되는가'에, 마인드맵은 '무엇이 연관되는가'에 초점을 둡니다.</p>
+
+      <h3>플로우차트 도형의 의미</h3>
+      <p>사각형은 일반적인 처리 단계(공정)를 나타냅니다. 둥근 사각형은 프로세스의 시작과 끝을 표시합니다. 마름모는 조건 분기(예/아니오)를 의미하며, 의사결정 지점을 나타냅니다. 원은 연결점이나 참조 지점으로 사용됩니다. 평행사변형은 데이터 입력이나 출력을 나타내며, 문서 모양은 보고서나 서류 같은 산출물을 표현합니다. 이 도형들을 올바르게 사용하면 팀원 모두가 다이어그램을 일관되게 해석할 수 있습니다.</p>
+
+      <h3>업무에서 플로우차트 활용하기</h3>
+      <p>업무 승인 프로세스, 고객 응대 절차, 신규 직원 온보딩 등 반복적인 업무를 플로우차트로 문서화하면 담당자 교체 시에도 업무 연속성을 유지할 수 있습니다. 회의에서 프로세스를 함께 그리며 병목 구간을 발견하고, 개선 포인트를 도출하는 데에도 효과적입니다. 도식화 메이커는 별도 프로그램 설치 없이 브라우저에서 바로 작성할 수 있어 회의 중 실시간으로 다이어그램을 만들 수 있습니다.</p>
+
+      <h3>마인드맵으로 아이디어 정리하기</h3>
+      <p>프로젝트 기획, SWOT 분석, 학습 계획 등 복잡한 주제를 마인드맵으로 펼치면 핵심과 세부 항목의 관계를 한눈에 파악할 수 있습니다. 중심 주제에서 Tab 키로 가지를 추가하며 자유롭게 확장하고, 레벨별 색상으로 구조를 구분할 수 있습니다. 아이디어 브레인스토밍 시 판단 없이 모든 연관 개념을 먼저 적은 뒤, 나중에 정리하는 방식으로 활용해 보세요.</p>
+
+      <h3>발표자료에 다이어그램 삽입하기</h3>
+      <p>완성한 다이어그램은 PNG 또는 SVG로 저장하여 PowerPoint, Google Slides, Notion, Word 등에 바로 삽입할 수 있습니다. PNG는 호환성이 좋고, SVG는 확대해도 선명합니다. 공유 링크 기능으로 팀원에게 URL만 전달하여 같은 다이어그램을 함께 편집·확인할 수도 있습니다. 발표 전 '전체 보기'로 다이어그램 전체를 확인하고, 필요한 부분만 확대하여 캡처하는 것을 권장합니다.</p>
+    </article>
+    <p class="footer-links"><a href="privacy.html">개인정보처리방침</a></p>
+    <p class="copyright">© 2026 도식화 메이커 (diagrammaker.pages.dev)</p>
+  </footer>
+
+  <!-- Modals -->
+  <div class="modal hidden" id="modal-start">
+    <div class="modal-content">
+      <h2>도식화 메이커에 오신 것을 환영합니다</h2>
+      <p>회원가입 없이 바로 시작하세요. 템플릿을 선택하거나 빈 캔버스에서 시작할 수 있습니다.</p>
+      <div class="modal-templates" id="start-templates"></div>
+      <button class="btn btn-ghost btn-block" id="btn-start-blank">빈 캔버스로 시작</button>
+    </div>
+  </div>
+
+  <div class="modal hidden" id="modal-resume">
+    <div class="modal-content">
+      <h2>저번 작업 이어서 하기</h2>
+      <p>이전에 작업하던 다이어그램이 있습니다. 이어서 작업하시겠습니까?</p>
+      <div class="modal-actions">
+        <button class="btn btn-primary" id="btn-resume-yes">이어서 하기</button>
+        <button class="btn btn-ghost" id="btn-resume-no">새로 시작</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal hidden" id="modal-confirm">
+    <div class="modal-content">
+      <h2 id="confirm-title">확인</h2>
+      <p id="confirm-message"></p>
+      <div class="modal-actions">
+        <button class="btn btn-primary" id="confirm-yes">확인</button>
+        <button class="btn btn-ghost" id="confirm-no">취소</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="context-menu hidden" id="context-menu">
+    <button data-action="edit">텍스트 편집</button>
+    <button data-action="duplicate">복제</button>
+    <button data-action="delete">삭제</button>
+    <button data-action="color">색상 변경</button>
+  </div>
+
+  <div class="toast hidden" id="toast"></div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <script src="js/utils.js"></script>
+  <script src="js/history.js"></script>
+  <script src="js/storage.js"></script>
+  <script src="js/templates.js"></script>
+  <script src="js/nodes.js"></script>
+  <script src="js/connections.js"></script>
+  <script src="js/canvas.js"></script>
+  <script src="js/flowchart.js"></script>
+  <script src="js/mindmap.js"></script>
+  <script src="js/export.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
