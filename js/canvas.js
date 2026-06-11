@@ -6,6 +6,7 @@ const Canvas = {
   zoom: 1,
   isPanning: false,
   panStart: null,
+  panPointerId: null,
   spaceHeld: false,
 
   init() {
@@ -104,28 +105,46 @@ const Canvas = {
       }
     });
 
-    this.wrap.addEventListener('mousedown', e => {
-      if (this.spaceHeld || e.button === 1) {
-        e.preventDefault();
+    // Pointer Events cover mouse, touch and pen with one code path.
+    // Mouse keeps the original behavior (pan only with Space or middle
+    // button); touch/pen pans by dragging the empty canvas, since there
+    // is no Space key or middle button on a touchscreen.
+    this.wrap.addEventListener('pointerdown', e => {
+      if (this.isPanning) return; // one pan gesture at a time
+      const touchPan = e.pointerType !== 'mouse'
+        && this._isEmptyTarget(e.target)
+        && !(typeof App !== 'undefined' && (App.drag || App.connectDrag || App.resizeDrag));
+      if (this.spaceHeld || e.button === 1 || touchPan) {
+        if (e.pointerType === 'mouse') e.preventDefault();
         this.isPanning = true;
+        this.panPointerId = e.pointerId;
         this.panStart = { x: e.clientX - this.pan.x, y: e.clientY - this.pan.y };
         this.wrap.classList.add('panning');
+        try { this.wrap.setPointerCapture(e.pointerId); } catch (err) { /* pointer gone */ }
       }
     });
 
-    window.addEventListener('mousemove', e => {
-      if (this.isPanning && this.panStart) {
+    window.addEventListener('pointermove', e => {
+      if (this.isPanning && this.panStart && e.pointerId === this.panPointerId) {
         this.pan.x = e.clientX - this.panStart.x;
         this.pan.y = e.clientY - this.panStart.y;
         this.applyTransform();
       }
     });
 
-    window.addEventListener('mouseup', () => {
+    const endPan = e => {
+      if (this.panPointerId !== null && e.pointerId !== this.panPointerId) return;
       this.isPanning = false;
       this.panStart = null;
+      this.panPointerId = null;
       if (!this.spaceHeld) this.wrap.classList.remove('panning');
-    });
+    };
+    window.addEventListener('pointerup', endPan);
+    window.addEventListener('pointercancel', endPan);
+  },
+
+  _isEmptyTarget(t) {
+    return t === this.wrap || t === this.svg || t.id === 'grid-bg';
   },
 
   getState() {

@@ -106,7 +106,9 @@ const Export = {
       const savedPan = { ...Canvas.pan };
       const savedZoom = Canvas.zoom;
       Canvas.fitToContent(App.state.nodes);
-      await new Promise(r => setTimeout(r, 100));
+      // Two animation frames guarantee the new transform is painted before
+      // capture — deterministic, unlike the old hardcoded setTimeout(100).
+      await new Promise(r => requestAnimationFrame(() => requestAnimationFrame(r)));
       await this._capture(wrap, 'diagram-full.png');
       Canvas.pan = savedPan;
       Canvas.zoom = savedZoom;

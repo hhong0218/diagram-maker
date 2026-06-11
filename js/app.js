@@ -14,6 +14,14 @@ const App = {
   editor: null,
   _rendered: false,
   _styleGesture: false,
+  _gesturePointer: null,
+  _touchDown: null,
+  _lastTap: null,
+  _touchDblAt: 0,
+  _longPress: null,
+  _menuPointer: null,
+  _suppressClickUntil: 0,
+  _colorInput: null,
 
   init() {
     Canvas.init();
@@ -293,6 +301,11 @@ const App = {
         const a = b.dataset.action;
         if (a === 'undo') this.undo();
         if (a === 'add') this._addNodeAtCenter();
+        if (a === 'edit') {
+          const node = this.state.nodes.find(n => this.state.selectedIds.includes(n.id));
+          if (node) this._startInlineEdit(node);
+          else Utils.showToast('편집할 노드를 먼저 선택하세요');
+        }
         if (a === 'export') Export.toPNG(false);
         if (a === 'fit') Canvas.fitToContent(this.state.nodes);
         if (a === 'share') this.shareURL();
@@ -300,27 +313,42 @@ const App = {
     });
 
     document.getElementById('context-menu').addEventListener('click', e => {
+      if (Date.now() < this._suppressClickUntil) return;
       const action = e.target.dataset.action;
       if (!action) return;
       this._handleContextAction(action);
       this._hideContextMenu();
     });
 
-    document.addEventListener('click', () => this._hideContextMenu());
+    document.addEventListener('click', () => {
+      // Ignore the synthetic click fired right after a long-press opened
+      // the menu, so the menu does not close itself immediately.
+      if (Date.now() < this._suppressClickUntil) return;
+      this._hideContextMenu();
+    });
   },
 
+  // Pointer Events (pointerdown/move/up/cancel) replace the old mouse
+  // listeners so mouse, touch and pen all share one code path. The active
+  // gesture pointer is captured to the canvas wrapper, which keeps fast
+  // drags working and makes re-renders mid-drag safe on touch.
   _bindCanvas() {
     const wrap = document.getElementById('canvas-wrap');
-    let lastClick = 0;
 
-    wrap.addEventListener('mousedown', e => {
+    wrap.addEventListener('pointerdown', e => {
       if (Canvas.spaceHeld || e.button === 1) return;
+      if (this._gesturePointer !== null) return; // one gesture at a time
+      if (Canvas.isPanning && e.pointerId !== Canvas.panPointerId) return;
       const target = e.target;
       const world = Canvas.screenToWorld(e.clientX, e.clientY);
+      if (e.pointerType !== 'mouse') {
+        this._touchDown = { x: e.clientX, y: e.clientY, t: Date.now(), id: e.pointerId };
+      }
 
       if (target.classList.contains('connect-point')) {
         const g = target.closest('.node-group');
         const nodeId = g.dataset.id;
+        this._beginGesture(e, wrap);
         this.connectDrag = { fromId: nodeId, fromSide: target.dataset.side, x: world.x, y: world.y };
         e.stopPropagation();
         return;
@@ -329,6 +357,7 @@ const App = {
       if (target.classList.contains('resize-handle')) {
         const g = target.closest('.node-group');
         const node = this.state.nodes.find(n => n.id === g.dataset.id);
+        this._beginGesture(e, wrap);
         this.resizeDrag = { node, startX: world.x, startY: world.y, origW: node.width, origH: node.height };
         this._saveHistory();
         e.stopPropagation();
@@ -338,6 +367,20 @@ const App = {
       const nodeG = target.closest('.node-group');
       if (nodeG) {
         const id = nodeG.dataset.id;
+
+        // Touch has no hover: when a node is already selected, a drag that
+        // starts near one of its side points creates a connection instead
+        // of moving the node.
+        if (e.pointerType !== 'mouse' && this.state.selectedIds.includes(id)) {
+          const side = this._sideNearPointer(id, e.clientX, e.clientY, 24);
+          if (side) {
+            this._beginGesture(e, wrap);
+            this.connectDrag = { fromId: id, fromSide: side, x: world.x, y: world.y };
+            e.stopPropagation();
+            return;
+          }
+        }
+
         if (!e.shiftKey) this.state.selectedConnIds = [];
         if (!e.shiftKey && !this.state.selectedIds.includes(id)) {
           this.state.selectedIds = [id];
@@ -345,18 +388,19 @@ const App = {
           this.state.selectedIds = this.state.selectedIds.includes(id)
             ? this.state.selectedIds.filter(x => x !== id) : [...this.state.selectedIds, id];
         }
-        const node = this.state.nodes.find(n => n.id === id);
+        this._beginGesture(e, wrap);
         this.drag = { nodes: this.state.selectedIds.map(sid => {
           const n = this.state.nodes.find(x => x.id === sid);
           return { node: n, offX: world.x - n.x, offY: world.y - n.y };
         }), startX: world.x, startY: world.y, moved: false };
         this._saveHistory();
         this.render();
+        if (e.pointerType !== 'mouse') this._armLongPress(e);
         e.stopPropagation();
         return;
       }
 
-      if (target.classList.contains('conn-path') || target.classList.contains('conn-label')) {
+      if (target.classList.contains('conn-path') || target.classList.contains('conn-hit') || target.classList.contains('conn-label')) {
         const id = target.closest('g').dataset.id;
         this.state.selectedConnIds = [id];
         this.state.selectedIds = [];
@@ -373,35 +417,16 @@ const App = {
     });
 
     wrap.addEventListener('dblclick', e => {
-      const now = Date.now();
-      const world = Canvas.screenToWorld(e.clientX, e.clientY);
-      const nodeG = e.target.closest('.node-group');
-
-      if (nodeG) {
-        const node = this.state.nodes.find(n => n.id === nodeG.dataset.id);
-        this._startInlineEdit(node, e);
-        return;
-      }
-
-      if (e.target.classList.contains('conn-path') || e.target.classList.contains('conn-label')) {
-        const id = e.target.closest('g').dataset.id;
-        const conn = this.state.connections.find(c => c.id === id);
-        this._startConnLabelEdit(conn, e);
-        return;
-      }
-
-      if (!Canvas.spaceHeld && this.state.mode === 'flowchart') {
-        this._saveHistory();
-        const node = Nodes.create(Nodes.defaultShape, world.x, world.y);
-        this.state.nodes.push(node);
-        this.state.selectedIds = [node.id];
-        this.render();
-        this._checkBadge();
-        setTimeout(() => this._startInlineEdit(node, e), 50);
-      }
+      // Skip if our own touch double-tap just handled this position.
+      if (Date.now() - (this._touchDblAt || 0) < 700) return;
+      this._onDoublePoint(e);
     });
 
-    wrap.addEventListener('mousemove', e => {
+    wrap.addEventListener('pointermove', e => {
+      if (this._gesturePointer !== null && e.pointerId !== this._gesturePointer) return;
+      if (this._longPress && Utils.dist(e.clientX, e.clientY, this._longPress.x, this._longPress.y) > 10) {
+        this._cancelLongPress();
+      }
       const world = Canvas.screenToWorld(e.clientX, e.clientY);
 
       if (this.connectDrag) {
@@ -419,6 +444,12 @@ const App = {
       }
 
       if (this.drag) {
+        // Touch jitters a few px on a plain tap: require a small slop
+        // before treating it as a real move (mouse keeps old behavior).
+        if (!this.drag.moved && e.pointerType !== 'mouse' && this._touchDown
+            && Utils.dist(e.clientX, e.clientY, this._touchDown.x, this._touchDown.y) < 6) {
+          return;
+        }
         this.drag.moved = true;
         this.drag.nodes.forEach(({ node, offX, offY }) => {
           node.x = world.x - offX;
@@ -428,21 +459,26 @@ const App = {
       }
     });
 
-    wrap.addEventListener('mouseup', e => {
+    wrap.addEventListener('pointerup', e => {
+      if (this._gesturePointer !== null && e.pointerId !== this._gesturePointer) return;
+      this._cancelLongPress();
+      if (this._menuPointer === e.pointerId) {
+        // The tap that opened the long-press menu fires a click on release;
+        // do not let that click close (or activate) the menu instantly.
+        this._suppressClickUntil = Date.now() + 400;
+        this._menuPointer = null;
+      }
+
       if (this.connectDrag) {
-        const target = e.target;
-        if (target.classList.contains('connect-point')) {
-          const g = target.closest('.node-group');
-          const toId = g.dataset.id;
-          if (toId !== this.connectDrag.fromId) {
-            this._saveHistory();
-            const type = this.state.mode === 'mindmap' ? 'curved' : 'orthogonal';
-            this.state.connections.push(Connections.create(
-              this.connectDrag.fromId, toId,
-              this.connectDrag.fromSide, target.dataset.side,
-              { type, arrowEnd: this.state.mode !== 'mindmap' }
-            ));
-          }
+        const drop = this._findDropTarget(e.clientX, e.clientY);
+        if (drop && drop.toId !== this.connectDrag.fromId) {
+          this._saveHistory();
+          const type = this.state.mode === 'mindmap' ? 'curved' : 'orthogonal';
+          this.state.connections.push(Connections.create(
+            this.connectDrag.fromId, drop.toId,
+            this.connectDrag.fromSide, drop.toSide,
+            { type, arrowEnd: this.state.mode !== 'mindmap' }
+          ));
         }
         this.connectDrag = null;
         document.getElementById('overlay-layer').innerHTML = '';
@@ -455,9 +491,37 @@ const App = {
       }
       this.drag = null;
       this.resizeDrag = null;
+      this._gesturePointer = null;
+
+      if (e.pointerType !== 'mouse') this._detectDoubleTap(e);
+    });
+
+    wrap.addEventListener('pointercancel', e => {
+      if (this._gesturePointer !== null && e.pointerId !== this._gesturePointer) return;
+      this._cancelLongPress();
+      if (this.connectDrag) {
+        this.connectDrag = null;
+        document.getElementById('overlay-layer').innerHTML = '';
+        this.render();
+      }
+      if ((this.drag && !this.drag.moved) || (this.resizeDrag && !this.resizeDrag.moved)) {
+        History.discardLast();
+        this._updateUndoButtons();
+      }
+      this.drag = null;
+      this.resizeDrag = null;
+      this._gesturePointer = null;
+      this._touchDown = null;
+      this._lastTap = null;
     });
 
     wrap.addEventListener('contextmenu', e => {
+      if (e.pointerType === 'touch' || e.pointerType === 'pen') {
+        // Touch long-press is handled by our own timer (with drag cleanup);
+        // suppress the native menu/selection UI.
+        e.preventDefault();
+        return;
+      }
       const nodeG = e.target.closest('.node-group');
       if (nodeG) {
         e.preventDefault();
@@ -466,6 +530,135 @@ const App = {
         this._showContextMenu(e.clientX, e.clientY);
       }
     });
+  },
+
+  _beginGesture(e, wrap) {
+    this._gesturePointer = e.pointerId;
+    try { wrap.setPointerCapture(e.pointerId); } catch (err) { /* pointer gone */ }
+  },
+
+  // Double click / double tap share one handler. Uses elementsFromPoint
+  // because pointer capture retargets touch events to the wrapper.
+  _onDoublePoint(e) {
+    const els = document.elementsFromPoint(e.clientX, e.clientY);
+    const world = Canvas.screenToWorld(e.clientX, e.clientY);
+
+    const nodeG = els.map(el => el.closest ? el.closest('.node-group') : null).find(g => g);
+    if (nodeG) {
+      const node = this.state.nodes.find(n => n.id === nodeG.dataset.id);
+      if (node) { this._startInlineEdit(node, e); return; }
+    }
+
+    const connEl = els.find(el => el.classList &&
+      (el.classList.contains('conn-path') || el.classList.contains('conn-hit') || el.classList.contains('conn-label')));
+    if (connEl) {
+      const conn = this.state.connections.find(c => c.id === connEl.closest('g').dataset.id);
+      if (conn) { this._startConnLabelEdit(conn); return; }
+    }
+
+    if (!Canvas.spaceHeld && this.state.mode === 'flowchart') {
+      this._saveHistory();
+      const node = Nodes.create(Nodes.defaultShape, world.x, world.y);
+      this.state.nodes.push(node);
+      this.state.selectedIds = [node.id];
+      this.render();
+      this._checkBadge();
+      setTimeout(() => this._startInlineEdit(node, e), 50);
+    }
+  },
+
+  _detectDoubleTap(e) {
+    const down = this._touchDown;
+    this._touchDown = null;
+    if (!down || down.id !== e.pointerId) return;
+    if (Utils.dist(e.clientX, e.clientY, down.x, down.y) > 12 || Date.now() - down.t > 400) {
+      this._lastTap = null;
+      return;
+    }
+    const now = Date.now();
+    const prev = this._lastTap;
+    if (prev && now - prev.t < 350 && Utils.dist(e.clientX, e.clientY, prev.x, prev.y) < 30) {
+      this._lastTap = null;
+      this._touchDblAt = now;
+      this._onDoublePoint(e);
+    } else {
+      this._lastTap = { x: e.clientX, y: e.clientY, t: now };
+    }
+  },
+
+  // Long-press on a node (touch) opens the context menu, replacing
+  // desktop right-click.
+  _armLongPress(e) {
+    this._cancelLongPress();
+    const x = e.clientX, y = e.clientY, pointerId = e.pointerId;
+    this._longPress = {
+      x, y,
+      timer: setTimeout(() => {
+        this._longPress = null;
+        if (this.drag && !this.drag.moved) {
+          History.discardLast();
+          this._updateUndoButtons();
+          this.drag = null;
+          this._gesturePointer = null;
+          this._menuPointer = pointerId;
+          this._suppressClickUntil = Date.now() + 900;
+          this._showContextMenu(x, y);
+        }
+      }, 550)
+    };
+  },
+
+  _cancelLongPress() {
+    if (this._longPress) {
+      clearTimeout(this._longPress.timer);
+      this._longPress = null;
+    }
+  },
+
+  // Distance (in screen px) from the pointer to a node's side connect
+  // points; gives touch a generous grab radius without changing the
+  // precise mouse hit areas.
+  _sideNearPointer(nodeId, clientX, clientY, threshold) {
+    const node = this.state.nodes.find(n => n.id === nodeId);
+    if (!node) return null;
+    // Cap the radius by node size: on small nodes the center is close to
+    // the side points, and a body tap must still drag the node.
+    const cap = Math.min(node.width, node.height) * Canvas.zoom * 0.35;
+    const rect = Canvas.svg.getBoundingClientRect();
+    let best = null, bestD = Math.min(threshold, cap);
+    ['top', 'right', 'bottom', 'left'].forEach(side => {
+      const p = Utils.getSidePoint(node, side);
+      const sx = p.x * Canvas.zoom + Canvas.pan.x + rect.left;
+      const sy = p.y * Canvas.zoom + Canvas.pan.y + rect.top;
+      const d = Utils.dist(clientX, clientY, sx, sy);
+      if (d <= bestD) { bestD = d; best = side; }
+    });
+    return best;
+  },
+
+  // Where did a connection drag end? Pointer capture means e.target is the
+  // wrapper, so hit-test under the pointer instead. Falls back from an
+  // exact connect-point to "any node, nearest side" which makes dropping
+  // with a finger forgiving.
+  _findDropTarget(clientX, clientY) {
+    const els = document.elementsFromPoint(clientX, clientY);
+    for (const el of els) {
+      if (el.classList && el.classList.contains('connect-point')) {
+        const g = el.closest('.node-group');
+        if (g) return { toId: g.dataset.id, toSide: el.dataset.side };
+      }
+    }
+    for (const el of els) {
+      const g = el.closest ? el.closest('.node-group') : null;
+      if (g) {
+        const node = this.state.nodes.find(n => n.id === g.dataset.id);
+        if (node) {
+          const w = Canvas.screenToWorld(clientX, clientY);
+          return { toId: node.id, toSide: Utils.nearestSide(node, w.x, w.y) };
+        }
+      }
+    }
+    return null;
   },
 
   _drawTempLine(drag, world) {
@@ -548,13 +741,47 @@ const App = {
     this.editor = ta;
   },
 
-  _startConnLabelEdit(conn, e) {
-    const label = prompt('연결선 라벨:', conn.label || '');
-    if (label !== null) {
-      this._saveHistory();
-      conn.label = label;
-      this.render();
-    }
+  // Inline overlay input replaces window.prompt(), which blocks the page
+  // and is unusable on mobile.
+  _startConnLabelEdit(conn) {
+    if (this.editor) { this.editor.remove(); this.editor = null; }
+    const pos = Connections.labelPos(conn, this.state.nodes);
+    const rect = Canvas.svg.getBoundingClientRect();
+    const sx = pos.x * Canvas.zoom + Canvas.pan.x + rect.left;
+    const sy = pos.y * Canvas.zoom + Canvas.pan.y + rect.top;
+
+    const input = document.createElement('input');
+    input.type = 'text';
+    input.className = 'inline-editor inline-editor-label';
+    input.value = conn.label || '';
+    input.placeholder = '라벨 입력';
+    const w = 160;
+    input.style.width = w + 'px';
+    input.style.left = Utils.clamp(sx - w / 2, 8, window.innerWidth - w - 8) + 'px';
+    input.style.top = Math.max(8, sy - 18) + 'px';
+    document.body.appendChild(input);
+    input.focus();
+    input.select();
+
+    let done = false;
+    const finish = commit => {
+      if (done) return;
+      done = true;
+      const v = input.value.trim();
+      if (commit && v !== (conn.label || '')) {
+        this._saveHistory();
+        conn.label = v;
+        this.render();
+      }
+      input.remove();
+      this.editor = null;
+    };
+    input.addEventListener('blur', () => finish(true));
+    input.addEventListener('keydown', ev => {
+      if (ev.key === 'Enter') { ev.preventDefault(); finish(true); }
+      if (ev.key === 'Escape') { finish(false); }
+    });
+    this.editor = input;
   },
 
   addMindmapChild() {
@@ -695,11 +922,27 @@ const App = {
 
   shareURL() {
     const url = Storage.encodeToURL(this._getSaveState());
-    navigator.clipboard.writeText(url).then(() => {
-      Utils.showToast('공유 링크가 복사되었습니다!');
-    }).catch(() => {
-      prompt('공유 링크:', url);
-    });
+    const ok = () => Utils.showToast('공유 링크가 복사되었습니다!');
+    const fallback = () => {
+      try {
+        const ta = document.createElement('textarea');
+        ta.value = url;
+        ta.setAttribute('readonly', '');
+        ta.style.position = 'fixed';
+        ta.style.opacity = '0';
+        document.body.appendChild(ta);
+        ta.select();
+        const copied = document.execCommand('copy');
+        ta.remove();
+        if (copied) { ok(); return; }
+      } catch (e) { /* fall through to manual copy */ }
+      Utils.showConfirm('공유 링크', url + '\n\n복사에 실패했습니다. 위 주소를 직접 복사해 주세요.');
+    };
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(url).then(ok).catch(fallback);
+    } else {
+      fallback();
+    }
   },
 
   _showContextMenu(x, y) {
@@ -725,11 +968,44 @@ const App = {
     }
     if (action === 'color') {
       const node = this.state.nodes.find(n => this.state.selectedIds.includes(n.id));
-      if (node) {
-        const c = prompt('색상 (hex):', node.fillColor);
-        if (c) { this._saveHistory(); node.fillColor = c; node.strokeColor = c; this.render(); }
-      }
+      if (node) this._pickColor(node);
     }
+  },
+
+  // Native <input type="color"> replaces the old hex prompt(): it gives a
+  // real picker on both desktop and mobile.
+  _pickColor(node) {
+    if (this._colorInput) { this._colorInput.remove(); this._colorInput = null; }
+    const orig = { fill: node.fillColor, stroke: node.strokeColor };
+    const input = document.createElement('input');
+    input.type = 'color';
+    input.value = /^#[0-9a-fA-F]{6}$/.test(node.fillColor) ? node.fillColor : '#2d3748';
+    input.className = 'hidden-color-input';
+    document.body.appendChild(input);
+    this._colorInput = input;
+
+    input.addEventListener('input', () => {
+      // Live preview without flooding the history stack.
+      node.fillColor = input.value;
+      node.strokeColor = input.value;
+      this.render();
+    });
+    input.addEventListener('change', () => {
+      const v = input.value;
+      if (v !== orig.fill || v !== orig.stroke) {
+        // Restore the pre-picker state so the undo snapshot is correct,
+        // then commit the final color as one history step.
+        node.fillColor = orig.fill;
+        node.strokeColor = orig.stroke;
+        this._saveHistory();
+        node.fillColor = v;
+        node.strokeColor = v;
+        this.render();
+      }
+      input.remove();
+      if (this._colorInput === input) this._colorInput = null;
+    });
+    input.click();
   }
 };
 

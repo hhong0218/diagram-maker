@@ -60,6 +60,12 @@ const Connections = {
     const g = document.createElementNS('http://www.w3.org/2000/svg', 'g');
     g.setAttribute('data-id', conn.id);
 
+    // Invisible wide path so a 2px line is selectable with a finger.
+    const hit = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+    hit.setAttribute('class', 'conn-hit');
+    hit.setAttribute('d', this.pathD(conn, nodes));
+    g.appendChild(hit);
+
     const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
     path.setAttribute('class', 'conn-path' + (selected ? ' selected' : ''));
     path.setAttribute('d', this.pathD(conn, nodes));

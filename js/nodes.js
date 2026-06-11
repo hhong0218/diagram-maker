@@ -94,6 +94,15 @@ const Nodes = {
     rh.setAttribute('height', 10);
     g.appendChild(rh);
 
+    // Invisible, larger hit area so the resize handle is grabbable on touch.
+    const rhHit = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+    rhHit.setAttribute('class', 'resize-handle resize-hit');
+    rhHit.setAttribute('x', node.x + node.width - 13);
+    rhHit.setAttribute('y', node.y + node.height - 13);
+    rhHit.setAttribute('width', 26);
+    rhHit.setAttribute('height', 26);
+    g.appendChild(rhHit);
+
     return g;
   },
 

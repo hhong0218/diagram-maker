@@ -108,25 +108,11 @@ a:hover { text-decoration: underline; }
 .btn-block { display: block; width: 100%; margin-bottom: 0.4rem; text-align: center; }
 .btn-file { cursor: pointer; }
 
-/* Ad slots */
-.ad-slot {
-  background: var(--bg-primary);
-  border: 1px dashed var(--border);
-  color: var(--text-secondary);
-  text-align: center;
-  font-size: 0.75rem;
-  padding: 0.5rem;
-}
-
-.ad-header { border-bottom: 1px solid var(--border); }
-.ad-sidebar { margin-top: 1rem; min-height: 90px; }
-.ad-footer { margin-bottom: 1.5rem; min-height: 90px; }
-
 /* Workspace */
 .workspace {
   display: flex;
-  margin-top: calc(var(--header-height) + 32px);
-  height: calc(100vh - var(--header-height) - 32px);
+  margin-top: var(--header-height);
+  height: calc(100vh - var(--header-height));
 }
 
 .panel {
@@ -242,7 +228,15 @@ a:hover { text-decoration: underline; }
   overflow: hidden;
   background: var(--bg-primary);
   cursor: default;
+  /* Touch drags edit the diagram; the browser must not scroll/zoom here.
+     Page scrolling outside the canvas is unaffected. */
+  touch-action: none;
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
 }
+
+#overlay-layer { pointer-events: none; }
 
 .canvas-wrap.panning { cursor: grab; }
 .canvas-wrap.panning:active { cursor: grabbing; }
@@ -321,6 +315,15 @@ a:hover { text-decoration: underline; }
   cursor: pointer;
 }
 .conn-path.selected { stroke-width: 3; }
+
+/* Invisible fat stroke under each connection: finger-sized hit area */
+.conn-hit {
+  fill: none;
+  stroke: transparent;
+  stroke-width: 14;
+  pointer-events: stroke;
+  cursor: pointer;
+}
 .conn-label {
   font-size: 11px;
   fill: var(--text-secondary);
@@ -337,7 +340,8 @@ a:hover { text-decoration: underline; }
   transition: opacity 0.15s;
 }
 .node-group:hover .connect-point,
-.node-group.show-points .connect-point { opacity: 1; }
+.node-group.show-points .connect-point,
+.node-group.selected .connect-point { opacity: 1; } /* touch has no hover */
 
 .resize-handle {
   fill: var(--accent);
@@ -347,6 +351,12 @@ a:hover { text-decoration: underline; }
   opacity: 0;
 }
 .node-group.selected .resize-handle { opacity: 1; }
+
+/* Enlarged invisible grab area around the resize handle (touch) */
+.resize-hit {
+  fill: transparent;
+  stroke: none;
+}
 
 /* Modals */
 .modal {
@@ -441,6 +451,22 @@ a:hover { text-decoration: underline; }
   font-family: inherit;
 }
 
+.inline-editor-label { height: 36px; }
+
+/* Programmatically opened native color picker (context menu → 색상 변경) */
+.hidden-color-input {
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  width: 1px;
+  height: 1px;
+  opacity: 0.01;
+  border: none;
+  padding: 0;
+}
+
+#confirm-message { word-break: break-all; white-space: pre-wrap; }
+
 /* Footer guide */
 .footer {
   padding: 2rem 1.5rem;
@@ -457,11 +483,35 @@ a:hover { text-decoration: underline; }
 .guide-content h3 { font-size: 1rem; margin: 1.2rem 0 0.5rem; color: var(--accent); }
 .guide-content p { color: var(--text-secondary); line-height: 1.8; font-size: 0.9rem; margin-bottom: 0.5rem; }
 
+/* Guide link cards (index footer) */
+.guide-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 0.75rem;
+  margin: 1rem 0 1.5rem;
+}
+
+.guide-card {
+  display: block;
+  background: var(--bg-primary);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 1rem;
+  color: var(--text-primary);
+  transition: border-color 0.15s;
+}
+
+.guide-card:hover { border-color: var(--accent); text-decoration: none; }
+.guide-card strong { display: block; margin-bottom: 0.35rem; color: var(--accent); font-size: 0.95rem; }
+.guide-card span { color: var(--text-secondary); font-size: 0.82rem; line-height: 1.6; }
+
 .footer-links, .copyright {
   text-align: center;
   font-size: 0.82rem;
   color: var(--text-secondary);
 }
+
+.footer-links a { margin: 0 0.5rem; line-height: 2; display: inline-block; }
 
 .privacy-page {
   max-width: 700px;
@@ -472,9 +522,51 @@ a:hover { text-decoration: underline; }
 
 .privacy-page h1 { margin-bottom: 0.5rem; }
 .privacy-page h2 { font-size: 1rem; margin: 1.5rem 0 0.5rem; color: var(--accent); }
-.privacy-page ul { margin: 0.5rem 0 0.5rem 1.5rem; color: var(--text-secondary); }
+.privacy-page ul, .privacy-page ol { margin: 0.5rem 0 0.5rem 1.5rem; color: var(--text-secondary); }
 .privacy-page li { margin-bottom: 0.3rem; }
 .privacy-page p { color: var(--text-secondary); margin-bottom: 0.5rem; }
+
+/* Guide article pages (guides/) */
+.guide-article { max-width: 760px; }
+.guide-article h1 { font-size: 1.5rem; line-height: 1.4; margin-bottom: 0.3rem; }
+.guide-article .article-meta { font-size: 0.8rem; color: var(--text-secondary); margin-bottom: 1.5rem; }
+.guide-article h2 { font-size: 1.15rem; margin: 1.8rem 0 0.6rem; }
+.guide-article p { margin-bottom: 0.8rem; font-size: 0.95rem; }
+.guide-article table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 0.8rem 0;
+  font-size: 0.88rem;
+}
+.guide-article th, .guide-article td {
+  border: 1px solid var(--border);
+  padding: 0.5rem 0.7rem;
+  text-align: left;
+  color: var(--text-secondary);
+}
+.guide-article th { background: var(--bg-secondary); color: var(--text-primary); }
+
+.cta-box {
+  background: var(--bg-secondary);
+  border: 1px solid var(--accent);
+  border-radius: 10px;
+  padding: 1.2rem;
+  margin: 1.8rem 0;
+  text-align: center;
+}
+.cta-box p { margin-bottom: 0.8rem; }
+.cta-box .btn-primary { display: inline-block; padding: 0.7rem 1.6rem; border-radius: 8px; font-size: 0.95rem; }
+.cta-box .btn-primary:hover { text-decoration: none; }
+
+.related-links {
+  background: var(--bg-secondary);
+  border-radius: 10px;
+  padding: 1rem 1.2rem;
+  margin: 1.5rem 0;
+}
+.related-links h2 { margin-top: 0 !important; font-size: 1rem !important; }
+.related-links ul { list-style: none; margin: 0.5rem 0 0; }
+.related-links li { margin-bottom: 0.4rem; }
 
 /* Mobile toolbar */
 .mobile-toolbar {
@@ -503,7 +595,7 @@ a:hover { text-decoration: underline; }
 /* Responsive */
 @media (max-width: 900px) {
   .panel-left, .panel-right { display: none; }
-  .workspace { height: calc(100vh - var(--header-height) - 32px - 60px); margin-bottom: 60px; }
+  .workspace { height: calc(100vh - var(--header-height) - 60px); margin-bottom: 60px; }
   .mobile-toolbar { display: flex; }
   .header-actions .btn-ghost { display: none; }
   .mode-tab { padding: 0.35rem 0.6rem; font-size: 0.78rem; }
@@ -512,4 +604,14 @@ a:hover { text-decoration: underline; }
 @media (max-width: 500px) {
   .logo { font-size: 0.9rem; }
   #btn-share { font-size: 0.75rem; padding: 0.35rem 0.6rem; }
+}
+
+/* Touch devices: comfortable hit targets, and 16px inputs so iOS does not
+   auto-zoom when an editor receives focus. */
+@media (pointer: coarse) {
+  .inline-editor { font-size: 16px; }
+  .zoom-controls button { width: 44px; height: 44px; font-size: 1.2rem; }
+  .context-menu button { padding: 0.8rem 1rem; font-size: 1rem; }
+  .mode-tab { min-height: 40px; }
+  .mobile-toolbar button { min-width: 44px; min-height: 44px; }
 }

@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>플로우차트 그리는 법 — 기호 의미부터 실무 예제까지 | 도식화 메이커</title>
+  <meta name="description" content="플로우차트 기호(사각형·마름모·평행사변형)의 의미, 그리는 순서, 흔한 실수와 실무 예제까지. 처음 순서도를 그리는 사람을 위한 완전 가이드.">
+  <meta name="theme-color" content="#1a202c">
+  <link rel="canonical" href="https://diagram-maker.pages.dev/guides/flowchart-basics.html">
+  <link rel="icon" type="image/svg+xml" href="../favicon.svg">
+  <link rel="stylesheet" href="../css/style.css">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "플로우차트 그리는 법 — 기호 의미부터 실무 예제까지",
+    "description": "플로우차트 기호의 의미, 그리는 순서, 흔한 실수와 실무 예제를 다루는 입문 가이드",
+    "inLanguage": "ko",
+    "datePublished": "2026-06-11",
+    "dateModified": "2026-06-11",
+    "author": { "@type": "Organization", "name": "도식화 메이커" },
+    "publisher": { "@type": "Organization", "name": "도식화 메이커", "url": "https://diagram-maker.pages.dev/" },
+    "mainEntityOfPage": "https://diagram-maker.pages.dev/guides/flowchart-basics.html"
+  }
+  </script>
+</head>
+<body>
+  <header class="header">
+    <div class="header-inner">
+      <h1 class="logo"><a href="../index.html">도식화 메이커</a></h1>
+    </div>
+  </header>
+
+  <main class="privacy-page guide-article">
+    <article>
+      <h1>플로우차트 그리는 법 — 기호 의미부터 실무 예제까지</h1>
+      <p class="article-meta">도식화 메이커 가이드 · 2026년 6월 11일</p>
+
+      <p>플로우차트(순서도)는 일의 흐름을 도형과 화살표로 표현하는 가장 보편적인 다이어그램입니다. 업무 매뉴얼, 시스템 설계서, 발표자료 어디에나 등장하지만, 막상 그리려고 하면 "마름모는 언제 쓰지?", "화살표는 어디로 연결하지?"처럼 기본에서 막히는 경우가 많습니다. 이 가이드는 기호의 의미부터 그리는 순서, 자주 하는 실수까지 처음 플로우차트를 그리는 분을 기준으로 정리했습니다.</p>
+
+      <h2>1. 플로우차트 기호, 이것만 알면 됩니다</h2>
+      <p>국제 표준(ISO 5807)에는 수십 가지 기호가 있지만, 실무에서 쓰는 것은 사실상 여섯 가지입니다. 도식화 메이커의 도형 선택 패널도 이 여섯 가지로 구성되어 있습니다.</p>
+      <table>
+        <tr><th>기호</th><th>이름</th><th>용도</th></tr>
+        <tr><td>둥근 사각형</td><td>단자(Terminator)</td><td>프로세스의 시작과 끝. 모든 플로우차트는 시작과 끝이 각각 하나씩 있어야 합니다.</td></tr>
+        <tr><td>사각형</td><td>처리(Process)</td><td>일반적인 작업 단계. "서류 작성", "결재 요청"처럼 하나의 행동을 담습니다.</td></tr>
+        <tr><td>마름모</td><td>판단(Decision)</td><td>예/아니오로 갈라지는 조건 분기. 나가는 화살표는 반드시 2개 이상이며 각각에 "예", "아니오" 라벨을 붙입니다.</td></tr>
+        <tr><td>평행사변형</td><td>입출력(Input/Output)</td><td>데이터가 들어오거나 나가는 지점. "고객 정보 입력", "보고서 출력" 등.</td></tr>
+        <tr><td>원</td><td>연결자(Connector)</td><td>선이 복잡하게 교차할 때 흐름을 끊었다 잇는 참조 지점.</td></tr>
+        <tr><td>문서 모양</td><td>문서(Document)</td><td>산출물이 서류·보고서임을 강조할 때 사용합니다.</td></tr>
+      </table>
+
+      <h2>2. 그리는 순서 — 도형보다 흐름이 먼저</h2>
+      <p>잘 그린 플로우차트는 도형이 예쁜 차트가 아니라 흐름이 명확한 차트입니다. 권장 순서는 다음과 같습니다.</p>
+      <ol>
+        <li><strong>단계를 글로 먼저 나열합니다.</strong> "주문 접수 → 재고 확인 → 있으면 출고, 없으면 발주 → 배송"처럼 한 줄씩 적어보면 빠진 단계와 분기가 보입니다.</li>
+        <li><strong>시작과 끝을 둥근 사각형으로 놓습니다.</strong> 끝이 여러 개라면 프로세스 범위가 모호하다는 신호이므로 범위를 다시 정의합니다.</li>
+        <li><strong>처리 단계를 위에서 아래로 배치합니다.</strong> 시선의 흐름과 일치하도록 위→아래 또는 왼쪽→오른쪽 한 방향을 유지합니다.</li>
+        <li><strong>조건 분기를 마름모로 추가하고 라벨을 답니다.</strong> 도식화 메이커에서는 연결선을 더블클릭(모바일은 더블탭)하면 "예/아니오" 같은 라벨을 바로 입력할 수 있습니다.</li>
+        <li><strong>전체를 한 번 따라가며 검증합니다.</strong> 어떤 분기를 타더라도 끝에 도달하는지, 화살표가 끊긴 곳은 없는지 확인합니다.</li>
+      </ol>
+
+      <h2>3. 흔한 실수 4가지</h2>
+      <p><strong>첫째, 한 도형에 두 가지 일을 담는 것.</strong> "서류 작성 후 결재 요청"은 두 단계로 나눠야 병목을 찾을 때 어느 단계가 문제인지 알 수 있습니다. <strong>둘째, 분기 라벨 생략.</strong> 마름모에서 나가는 선에 예/아니오가 없으면 읽는 사람마다 다르게 해석합니다. <strong>셋째, 화살표 방향 혼용.</strong> 위에서 아래로 가다가 갑자기 위로 거슬러 올라가면 시선이 길을 잃습니다. 되돌아가는 흐름(재작업 등)은 한쪽 측면으로 우회시키는 것이 깔끔합니다. <strong>넷째, 너무 큰 범위.</strong> 한 장에 30개가 넘는 도형이 필요하다면 상위 프로세스와 하위 프로세스로 나누는 편이 전달력이 좋습니다.</p>
+
+      <h2>4. 실무 예제 — 휴가 승인 프로세스</h2>
+      <p>실제 회사에서 쓰는 휴가 승인 흐름을 예로 들면 이렇게 구성됩니다. 시작(둥근 사각형) → "휴가 신청서 작성"(사각형) → "잔여 연차 있음?"(마름모) — 아니오면 "신청 반려"(사각형)를 거쳐 끝, 예면 "팀장 승인?"(마름모) — 아니오면 사유와 함께 반려, 예면 "인사팀 등록"(사각형) → "결과 통보"(평행사변형) → 끝. 이렇게 분기마다 결과가 명확하면 신입 직원도 문서 한 장으로 프로세스를 이해할 수 있습니다. 같은 구조를 구매 결재, 고객 환불, 장애 대응 등 어떤 승인형 업무에도 그대로 적용할 수 있습니다.</p>
+
+      <h2>5. 도구 활용 팁</h2>
+      <p>도식화 메이커에서는 빈 캔버스를 더블클릭하면 선택한 도형이 바로 생성되고, 노드 가장자리의 파란 점을 드래그하면 연결선이 만들어집니다. 모바일에서는 노드를 한 번 탭해 선택하면 연결점이 나타나고, 그 점에서 다른 노드로 드래그하면 됩니다. 완성한 차트는 PNG로 저장해 발표자료에 붙여넣거나, 공유 링크로 팀원에게 전달할 수 있습니다. 결재 프로세스 템플릿을 불러와 수정하는 방식이 처음에는 가장 빠릅니다.</p>
+
+      <div class="cta-box">
+        <p>읽은 내용을 바로 연습해 보세요. 회원가입 없이 즉시 시작됩니다.</p>
+        <a class="btn-primary" href="../index.html">무료로 플로우차트 그리기 →</a>
+      </div>
+
+      <section class="related-links">
+        <h2>함께 읽으면 좋은 가이드</h2>
+        <ul>
+          <li><a href="mindmap-howto.html">마인드맵 작성법 — 아이디어 정리가 빨라지는 5단계</a></li>
+          <li><a href="work-diagrams.html">업무에 바로 쓰는 다이어그램 5종 — 조직도·프로세스맵·스윔레인</a></li>
+        </ul>
+      </section>
+    </article>
+  </main>
+
+  <footer class="footer">
+    <p class="footer-links">
+      <a href="flowchart-basics.html">플로우차트 가이드</a>
+      <a href="mindmap-howto.html">마인드맵 가이드</a>
+      <a href="work-diagrams.html">업무 다이어그램</a>
+      <a href="../about.html">서비스 소개</a>
+      <a href="../terms.html">이용약관</a>
+      <a href="../privacy.html">개인정보처리방침</a>
+    </p>
+    <p class="copyright">© 2026 도식화 메이커</p>
+  </footer>
+</body>
+</html>
