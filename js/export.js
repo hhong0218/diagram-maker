@@ -143,7 +143,7 @@ const Export = {
     try {
       await this._loadHtml2Canvas();
     } catch (e) {
-      Utils.showToast('PNG 모듈을 불러오지 못했습니다. 네트워크 확인 후 다시 시도하거나 SVG 저장을 이용하세요.', 4000);
+      Utils.showToast(I18n.t('pngModuleFail'), 4000);
       return;
     }
     try {
@@ -153,16 +153,16 @@ const Export = {
         ignoreElements: el2 => el2.classList && (el2.classList.contains('zoom-controls') || el2.classList.contains('badge'))
       });
       canvas.toBlob(blob => {
-        if (!blob) { Utils.showToast('PNG 저장 실패'); return; }
+        if (!blob) { Utils.showToast(I18n.t('pngFail')); return; }
         const a = document.createElement('a');
         a.href = URL.createObjectURL(blob);
         a.download = filename;
         a.click();
         URL.revokeObjectURL(a.href);
-        Utils.showToast('PNG 저장 완료!');
+        Utils.showToast(I18n.t('pngDone'));
       });
     } catch (e) {
-      Utils.showToast('PNG 저장 실패: ' + e.message);
+      Utils.showToast(I18n.t('pngFailMsg') + e.message);
     }
   }
 };

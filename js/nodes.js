@@ -1,7 +1,8 @@
 const Nodes = {
   defaultShape: 'rectangle',
 
-  create(type, x, y, text = '텍스트', opts = {}) {
+  create(type, x, y, text, opts = {}) {
+    if (text == null) text = I18n.t('defaultText');
     const size = Utils.measureText(text);
     const w = opts.width || Math.max(size.width, type === 'circle' ? 60 : 100);
     const h = opts.height || Math.max(size.height, type === 'circle' ? 60 : 44);

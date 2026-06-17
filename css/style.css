@@ -107,6 +107,8 @@ a:hover { text-decoration: underline; }
 .btn-ghost { background: transparent; }
 .btn-block { display: block; width: 100%; margin-bottom: 0.4rem; text-align: center; }
 .btn-file { cursor: pointer; }
+.lang-switch { text-decoration: none; }
+.lang-switch:hover { text-decoration: none; background: var(--border); }
 
 /* Workspace */
 .workspace {
@@ -613,6 +615,7 @@ a:hover { text-decoration: underline; }
   .workspace { height: calc(100vh - var(--header-height) - 60px); margin-bottom: 60px; }
   .mobile-toolbar { display: flex; }
   .header-actions .btn-ghost { display: none; }
+  .header-actions .lang-switch { display: inline-block; }
   .mode-tab { padding: 0.35rem 0.6rem; font-size: 0.78rem; }
 }
 

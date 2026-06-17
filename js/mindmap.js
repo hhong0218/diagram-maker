@@ -9,7 +9,7 @@ const Mindmap = {
     const spread = children.length * 70;
     const xOff = side === 'right' ? 200 : -200;
 
-    const child = Nodes.create('mindmap', parent.x + xOff, parent.y + spread - 30, '새 노드', {
+    const child = Nodes.create('mindmap', parent.x + xOff, parent.y + spread - 30, I18n.t('newNode'), {
       fillColor: color, strokeColor: color, level, parentId: parent.id, side
     });
     Nodes.autoSizeMindmap(child);
@@ -66,7 +66,7 @@ const Mindmap = {
   },
 
   initCenter(nodes, connections) {
-    const center = Nodes.create('mindmap', 0, 0, '중심 주제', {
+    const center = Nodes.create('mindmap', 0, 0, I18n.t('centerTopic'), {
       fillColor: Utils.MINDMAP_COLORS[0],
       strokeColor: Utils.MINDMAP_COLORS[0],
       level: 0, isCenter: true

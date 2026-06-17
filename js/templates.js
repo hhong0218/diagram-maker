@@ -1,4 +1,5 @@
-const Templates = {
+const TemplateData = {
+  ko: {
   flowchart: [
     {
       id: 'approval',
@@ -125,7 +126,148 @@ const Templates = {
       center: '중심 주제',
       children: []
     }
+  ]
+  },
+
+  en: {
+  flowchart: [
+    {
+      id: 'approval',
+      name: 'Approval Process',
+      nodes: [
+        { type: 'rounded', text: 'Start', x: 100, y: 50, width: 120, height: 50, fillColor: '#2b6cb0', strokeColor: '#63b3ed' },
+        { type: 'rectangle', text: 'Submit Request', x: 100, y: 150, width: 120, height: 50, fillColor: '#2d3748', strokeColor: '#a0aec0' },
+        { type: 'rectangle', text: 'Review', x: 100, y: 250, width: 120, height: 50, fillColor: '#2d3748', strokeColor: '#a0aec0' },
+        { type: 'diamond', text: 'Approved?', x: 85, y: 350, width: 150, height: 80, fillColor: '#744210', strokeColor: '#ed8936' },
+        { type: 'rectangle', text: 'Process Approval', x: -50, y: 480, width: 120, height: 50, fillColor: '#22543d', strokeColor: '#48bb78' },
+        { type: 'rectangle', text: 'Notify Rejection', x: 250, y: 480, width: 120, height: 50, fillColor: '#742a2a', strokeColor: '#fc8181' },
+        { type: 'rounded', text: 'End', x: 100, y: 580, width: 120, height: 50, fillColor: '#2b6cb0', strokeColor: '#63b3ed' }
+      ],
+      connections: [
+        [0, 1], [1, 2], [2, 3], [3, 4, 'Yes'], [3, 5, 'No'], [4, 6], [5, 6]
+      ]
+    },
+    {
+      id: 'decision',
+      name: 'Decision Tree',
+      nodes: [
+        { type: 'rounded', text: 'Start', x: 200, y: 30, width: 100, height: 45, fillColor: '#2b6cb0', strokeColor: '#63b3ed' },
+        { type: 'diamond', text: 'Condition A?', x: 175, y: 120, width: 150, height: 70, fillColor: '#744210', strokeColor: '#ed8936' },
+        { type: 'diamond', text: 'Condition B?', x: 30, y: 250, width: 150, height: 70, fillColor: '#744210', strokeColor: '#ed8936' },
+        { type: 'diamond', text: 'Condition C?', x: 350, y: 250, width: 150, height: 70, fillColor: '#744210', strokeColor: '#ed8936' },
+        { type: 'rectangle', text: 'Result 1', x: 30, y: 380, width: 100, height: 45, fillColor: '#2d3748', strokeColor: '#a0aec0' },
+        { type: 'rectangle', text: 'Result 2', x: 200, y: 380, width: 100, height: 45, fillColor: '#2d3748', strokeColor: '#a0aec0' },
+        { type: 'rectangle', text: 'Result 3', x: 370, y: 380, width: 100, height: 45, fillColor: '#2d3748', strokeColor: '#a0aec0' }
+      ],
+      connections: [[0, 1], [1, 2, 'Yes'], [1, 3, 'No'], [2, 4], [2, 5], [3, 6]]
+    },
+    {
+      id: 'onboarding',
+      name: 'Onboarding Process',
+      nodes: [
+        { type: 'rounded', text: 'New Hire', x: 150, y: 30, width: 100, height: 45, fillColor: '#2b6cb0', strokeColor: '#63b3ed' },
+        { type: 'rectangle', text: 'Submit Documents', x: 140, y: 120, width: 120, height: 45, fillColor: '#2d3748', strokeColor: '#a0aec0' },
+        { type: 'rectangle', text: 'Create Account', x: 140, y: 210, width: 120, height: 45, fillColor: '#2d3748', strokeColor: '#a0aec0' },
+        { type: 'rectangle', text: 'Complete Training', x: 140, y: 300, width: 120, height: 45, fillColor: '#2d3748', strokeColor: '#a0aec0' },
+        { type: 'parallelogram', text: 'Assign Mentor', x: 130, y: 390, width: 140, height: 45, fillColor: '#2c5282', strokeColor: '#63b3ed' },
+        { type: 'document', text: 'Onboarding Done', x: 140, y: 480, width: 120, height: 55, fillColor: '#22543d', strokeColor: '#48bb78' }
+      ],
+      connections: [[0, 1], [1, 2], [2, 3], [3, 4], [4, 5]]
+    },
+    {
+      id: 'sdlc',
+      name: 'Software Dev Cycle',
+      nodes: [
+        { type: 'rounded', text: 'Start', x: 160, y: 30, width: 100, height: 45, fillColor: '#2b6cb0', strokeColor: '#63b3ed' },
+        { type: 'rectangle', text: 'Plan', x: 150, y: 120, width: 120, height: 45, fillColor: '#2d3748', strokeColor: '#a0aec0' },
+        { type: 'rectangle', text: 'Develop', x: 150, y: 210, width: 120, height: 45, fillColor: '#2d3748', strokeColor: '#a0aec0' },
+        { type: 'rectangle', text: 'Test', x: 150, y: 300, width: 120, height: 45, fillColor: '#2d3748', strokeColor: '#a0aec0' },
+        { type: 'diamond', text: 'Bugs?', x: 135, y: 390, width: 150, height: 70, fillColor: '#744210', strokeColor: '#ed8936' },
+        { type: 'rectangle', text: 'Deploy', x: 150, y: 510, width: 120, height: 45, fillColor: '#22543d', strokeColor: '#48bb78' },
+        { type: 'rounded', text: 'Done', x: 160, y: 600, width: 100, height: 45, fillColor: '#2b6cb0', strokeColor: '#63b3ed' }
+      ],
+      connections: [[0, 1], [1, 2], [2, 3], [3, 4], [4, 2, 'Yes'], [4, 5, 'No'], [5, 6]]
+    },
+    {
+      id: 'customer',
+      name: 'Customer Support Flow',
+      nodes: [
+        { type: 'rounded', text: 'Ticket Received', x: 150, y: 30, width: 120, height: 45, fillColor: '#2b6cb0', strokeColor: '#63b3ed' },
+        { type: 'parallelogram', text: 'Review Inquiry', x: 140, y: 120, width: 140, height: 45, fillColor: '#2c5282', strokeColor: '#63b3ed' },
+        { type: 'diamond', text: 'Classify Type', x: 135, y: 210, width: 150, height: 70, fillColor: '#744210', strokeColor: '#ed8936' },
+        { type: 'rectangle', text: 'Tech Support', x: 20, y: 340, width: 110, height: 45, fillColor: '#2d3748', strokeColor: '#a0aec0' },
+        { type: 'rectangle', text: 'General Inquiry', x: 200, y: 340, width: 110, height: 45, fillColor: '#2d3748', strokeColor: '#a0aec0' },
+        { type: 'rectangle', text: 'Resolved', x: 150, y: 440, width: 120, height: 45, fillColor: '#22543d', strokeColor: '#48bb78' },
+        { type: 'document', text: 'Customer Feedback', x: 145, y: 530, width: 130, height: 55, fillColor: '#2d3748', strokeColor: '#a0aec0' }
+      ],
+      connections: [[0, 1], [1, 2], [2, 3, 'Tech'], [2, 4, 'General'], [3, 5], [4, 5], [5, 6]]
+    }
   ],
+
+  mindmap: [
+    {
+      id: 'project',
+      name: 'Project Planning',
+      center: 'Project Planning',
+      children: [
+        { text: 'Goals', children: ['Set KPIs', 'Milestones'] },
+        { text: 'Schedule', children: ['Q1', 'Q2'] },
+        { text: 'Team', children: ['Dev', 'Design', 'Product'] },
+        { text: 'Budget', children: ['Labor', 'Infra'] },
+        { text: 'Risks', children: ['Delays', 'Tech Risk'] }
+      ]
+    },
+    {
+      id: 'brainstorm',
+      name: 'Idea Brainstorming',
+      center: 'New Idea',
+      children: [
+        { text: 'Tech', children: ['AI', 'Cloud'] },
+        { text: 'Market', children: ['B2B', 'B2C'] },
+        { text: 'Users', children: ['Needs', 'Pain Points'] },
+        { text: 'Revenue', children: ['Subscription', 'Ads'] }
+      ]
+    },
+    {
+      id: 'swot',
+      name: 'SWOT Analysis',
+      center: 'SWOT Analysis',
+      children: [
+        { text: 'Strengths (S)', children: ['Technology', 'Brand'] },
+        { text: 'Weaknesses (W)', children: ['Funding', 'Staffing'] },
+        { text: 'Opportunities (O)', children: ['Market Growth', 'Policy'] },
+        { text: 'Threats (T)', children: ['Competition', 'Regulation'] }
+      ]
+    },
+    {
+      id: 'study',
+      name: 'Study Plan',
+      center: 'Study Plan',
+      children: [
+        { text: 'Subjects', children: ['Math', 'English', 'Science'] },
+        { text: 'Units', children: ['Basics', 'Advanced'] },
+        { text: 'Methods', children: ['Lectures', 'Practice', 'Review'] },
+        { text: 'Goals', children: ['Exam Prep', 'Certification'] }
+      ]
+    },
+    {
+      id: 'blank',
+      name: 'Blank Mind Map',
+      center: 'Central topic',
+      children: []
+    }
+  ]
+  }
+};
+
+const Templates = {
+  get flowchart() {
+    return (TemplateData[I18n.lang] || TemplateData.ko).flowchart;
+  },
+
+  get mindmap() {
+    return (TemplateData[I18n.lang] || TemplateData.ko).mindmap;
+  },
 
   buildFlowchart(tpl) {
     const nodes = tpl.nodes.map(n => ({

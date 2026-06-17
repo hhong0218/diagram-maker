@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Free Flowchart Maker &amp; Online Diagram Maker | No Sign-up</title>
+  <meta name="description" content="Create flowcharts and mind maps online for free in your browser. No sign-up, no install. A fast diagram maker for work processes, presentations, and brainstorming.">
+  <meta name="keywords" content="free flowchart maker, online diagram maker, mind map maker, create flowchart online, flowchart creator, diagram tool">
+  <meta name="theme-color" content="#1a202c">
+  <link rel="canonical" href="https://diagram-maker.pages.dev/en/">
+  <link rel="alternate" hreflang="ko" href="https://diagram-maker.pages.dev/">
+  <link rel="alternate" hreflang="en" href="https://diagram-maker.pages.dev/en/">
+  <link rel="alternate" hreflang="x-default" href="https://diagram-maker.pages.dev/">
+  <link rel="icon" type="image/svg+xml" href="../favicon.svg">
+  <meta property="og:title" content="Diagram Maker - Free Flowchart &amp; Mind Map Maker">
+  <meta property="og:description" content="Create diagrams right in your browser. No sign-up required.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://diagram-maker.pages.dev/en/">
+  <meta property="og:site_name" content="Diagram Maker">
+  <meta property="og:locale" content="en_US">
+  <meta property="og:locale:alternate" content="ko_KR">
+  <meta property="og:image" content="https://diagram-maker.pages.dev/og-image.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Diagram Maker - Free Flowchart &amp; Mind Map Maker">
+  <meta name="twitter:description" content="Create diagrams right in your browser. No sign-up required.">
+  <meta name="twitter:image" content="https://diagram-maker.pages.dev/og-image.png">
+  <link rel="stylesheet" href="../css/style.css">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Diagram Maker",
+    "alternateName": "Free Flowchart Maker",
+    "url": "https://diagram-maker.pages.dev/en/",
+    "description": "A free web app to create flowcharts and mind maps right in your browser. No sign-up, export to PNG, SVG, or JSON.",
+    "applicationCategory": "DesignApplication",
+    "operatingSystem": "Web",
+    "inLanguage": "en",
+    "isAccessibleForFree": true,
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+    "featureList": [
+      "Flowchart editor",
+      "Mind map editor",
+      "Work process templates",
+      "Export to PNG, SVG, JSON",
+      "Auto-save",
+      "Share link"
+    ]
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "Is the Diagram Maker free?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes, it is completely free. You can create flowcharts and mind maps right in your browser with no sign-up and no software to install."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Can I make both flowcharts and mind maps?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes. Use the tabs at the top to switch between flowchart mode and mind map mode. From work diagrams like process maps and org charts to brainstorming mind maps, you can draw them all in one place."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What formats can I export my diagram to?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "You can export to PNG, SVG, and JSON. PNG is great for pasting into presentations, SVG is ideal for high-resolution printing, and JSON is best for backups and re-editing. You can also share a link so others can edit with you."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Does it work on mobile?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes. As long as you have a browser, it works on both desktop and mobile. On phones and tablets you can drag nodes with your finger and double-tap to edit text."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Do I need to sign up?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "No. You can start working right away with no sign-up or login, and everything you create is stored only in your own browser and never sent to a server."
+        }
+      }
+    ]
+  }
+  </script>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-9QKMV5JQL5"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-9QKMV5JQL5');
+  </script>
+</head>
+<body>
+  <header class="header">
+    <div class="header-inner">
+      <h1 class="logo">Diagram Maker</h1>
+      <nav class="mode-tabs" aria-label="Select editing mode">
+        <button class="mode-tab active" data-mode="flowchart" aria-pressed="true">Flowchart</button>
+        <button class="mode-tab" data-mode="mindmap" aria-pressed="false">Mind Map</button>
+      </nav>
+      <div class="header-actions">
+        <button class="btn btn-ghost" id="btn-undo" title="Ctrl+Z">↩ Undo</button>
+        <button class="btn btn-ghost" id="btn-redo" title="Ctrl+Y">↪ Redo</button>
+        <button class="btn btn-primary" id="btn-share">Copy Share Link</button>
+        <a class="btn btn-ghost lang-switch" href="../" hreflang="ko" title="한국어 버전">한국어</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="workspace">
+    <aside class="panel panel-left" id="panel-left">
+      <section class="panel-section">
+        <h3>Shapes</h3>
+        <div class="shape-grid" id="shape-grid">
+          <button class="shape-btn active" data-shape="rectangle" title="Rectangle (process step)">
+            <svg viewBox="0 0 40 30"><rect x="2" y="2" width="36" height="26" fill="none" stroke="currentColor" stroke-width="2"/></svg>
+            <span>Rectangle</span>
+          </button>
+          <button class="shape-btn" data-shape="rounded" title="Rounded rectangle (start/end)">
+            <svg viewBox="0 0 40 30"><rect x="2" y="2" width="36" height="26" rx="8" fill="none" stroke="currentColor" stroke-width="2"/></svg>
+            <span>Start/End</span>
+          </button>
+          <button class="shape-btn" data-shape="diamond" title="Diamond (condition/branch)">
+            <svg viewBox="0 0 40 30"><polygon points="20,2 38,15 20,28 2,15" fill="none" stroke="currentColor" stroke-width="2"/></svg>
+            <span>Decision</span>
+          </button>
+          <button class="shape-btn" data-shape="circle" title="Circle (connector)">
+            <svg viewBox="0 0 40 30"><circle cx="20" cy="15" r="13" fill="none" stroke="currentColor" stroke-width="2"/></svg>
+            <span>Connector</span>
+          </button>
+          <button class="shape-btn" data-shape="parallelogram" title="Parallelogram (input/output)">
+            <svg viewBox="0 0 40 30"><polygon points="8,2 38,2 32,28 2,28" fill="none" stroke="currentColor" stroke-width="2"/></svg>
+            <span>Input/Output</span>
+          </button>
+          <button class="shape-btn" data-shape="document" title="Document">
+            <svg viewBox="0 0 40 30"><path d="M4,2 H30 L36,8 V28 H4 Z" fill="none" stroke="currentColor" stroke-width="2"/><line x1="30" y1="2" x2="30" y2="8" stroke="currentColor" stroke-width="2"/><line x1="30" y1="8" x2="36" y2="8" stroke="currentColor" stroke-width="2"/></svg>
+            <span>Document</span>
+          </button>
+        </div>
+      </section>
+      <section class="panel-section mindmap-only hidden" id="mindmap-tools">
+        <h3>Mind Map</h3>
+        <button class="btn btn-block" id="btn-add-child">+ Add Child Node (Tab)</button>
+      </section>
+      <section class="panel-section">
+        <h3>Canvas</h3>
+        <label class="toggle"><input type="checkbox" id="toggle-grid" checked> Show grid</label>
+        <button class="btn btn-block" id="btn-auto-align">Auto-arrange Nodes</button>
+        <button class="btn btn-block" id="btn-fit-view">Fit to View (Ctrl+0)</button>
+      </section>
+      <section class="panel-section" id="node-style-panel">
+        <h3>Selection Style</h3>
+        <label>Fill <input type="color" id="fill-color" value="#2d3748"></label>
+        <label>Border <input type="color" id="stroke-color" value="#63b3ed"></label>
+        <label>Line color <input type="color" id="conn-color" value="#a0aec0"></label>
+        <label>Line type
+          <select id="conn-type">
+            <option value="orthogonal">Elbow</option>
+            <option value="straight">Straight</option>
+            <option value="curved">Curved</option>
+          </select>
+        </label>
+        <label>Arrow
+          <select id="conn-arrow">
+            <option value="end">One-way →</option>
+            <option value="both">Two-way ↔</option>
+            <option value="none">None</option>
+          </select>
+        </label>
+      </section>
+    </aside>
+
+    <div class="canvas-wrap" id="canvas-wrap">
+      <svg id="diagram-svg" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <pattern id="grid-pattern" width="20" height="20" patternUnits="userSpaceOnUse">
+            <circle cx="1" cy="1" r="1" fill="#4a5568"/>
+          </pattern>
+          <marker id="arrow-end" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+            <polygon points="0 0, 10 3.5, 0 7" fill="context-stroke"/>
+          </marker>
+          <marker id="arrow-start" markerWidth="10" markerHeight="7" refX="1" refY="3.5" orient="auto">
+            <polygon points="10 0, 0 3.5, 10 7" fill="context-stroke"/>
+          </marker>
+        </defs>
+        <g id="viewport">
+          <rect id="grid-bg" class="grid-bg" x="-5000" y="-5000" width="10000" height="10000" fill="url(#grid-pattern)"/>
+          <g id="connections-layer"></g>
+          <g id="nodes-layer"></g>
+          <g id="overlay-layer"></g>
+        </g>
+      </svg>
+      <div class="zoom-controls">
+        <button id="zoom-in" title="Ctrl++" aria-label="Zoom in">+</button>
+        <span id="zoom-level">100%</span>
+        <button id="zoom-out" title="Ctrl+-" aria-label="Zoom out">−</button>
+      </div>
+      <div class="badge hidden" id="complexity-badge">🎉 Nicely done! You built a complex diagram</div>
+    </div>
+
+    <aside class="panel panel-right" id="panel-right">
+      <section class="panel-section">
+        <h3>Templates</h3>
+        <div class="template-list" id="template-list"></div>
+      </section>
+      <section class="panel-section">
+        <h3>Save / Export</h3>
+        <button class="btn btn-block" id="btn-export-png">Save PNG (current view)</button>
+        <button class="btn btn-block" id="btn-export-png-full">Save PNG (full)</button>
+        <button class="btn btn-block" id="btn-export-svg">Save SVG</button>
+        <button class="btn btn-block" id="btn-export-json">Save JSON</button>
+        <label class="btn btn-block btn-file">
+          Import JSON
+          <input type="file" id="import-json" accept=".json" hidden>
+        </label>
+      </section>
+      <div class="guide-tip">
+        <p>💡 <strong>Tip:</strong> Save as PNG and paste it straight into your slides!</p>
+      </div>
+    </aside>
+  </main>
+
+  <div class="mobile-toolbar" id="mobile-toolbar">
+    <button data-action="undo" aria-label="Undo">↩</button>
+    <button data-action="add" aria-label="Add node">+</button>
+    <button data-action="edit" aria-label="Edit selected node text">✏️</button>
+    <button data-action="export" aria-label="Save PNG">💾</button>
+    <button data-action="fit" aria-label="Fit to view">⊡</button>
+    <button data-action="share" aria-label="Copy share link">🔗</button>
+  </div>
+
+  <footer class="footer">
+    <article class="guide-content">
+      <h2>Flowchart vs. mind map: what's the difference?</h2>
+      <p>A flowchart represents a work process or decision flow step by step. It visualizes progress from start to finish so everyone can follow the same logic. A mind map, on the other hand, branches ideas out from a single central topic, making it ideal for brainstorming and organizing concepts. Flowcharts focus on "how things proceed," while mind maps focus on "what is related."</p>
+      <p>Diagram Maker supports both. Draw right in your browser (desktop or mobile) with no sign-up and no install. Export your finished diagram to PNG, SVG, or JSON, or send it as a share link. Pick a template on the right, or start from a blank canvas.</p>
+
+      <h2>Frequently asked questions</h2>
+      <dl class="faq-list">
+        <dt>Is the Diagram Maker free?</dt>
+        <dd>Yes, it is completely free. You can create flowcharts and mind maps right in your browser with no sign-up and no software to install.</dd>
+        <dt>Can I make both flowcharts and mind maps?</dt>
+        <dd>Yes. Use the tabs at the top to switch between flowchart mode and mind map mode. From work diagrams like process maps and org charts to brainstorming mind maps, you can draw them all in one place.</dd>
+        <dt>What formats can I export my diagram to?</dt>
+        <dd>You can export to PNG, SVG, and JSON. PNG is great for pasting into presentations, SVG is ideal for high-resolution printing, and JSON is best for backups and re-editing. You can also share a link so others can edit with you.</dd>
+        <dt>Does it work on mobile?</dt>
+        <dd>Yes. As long as you have a browser, it works on both desktop and mobile. On phones and tablets you can drag nodes with your finger and double-tap to edit text.</dd>
+        <dt>Do I need to sign up?</dt>
+        <dd>No. You can start working right away with no sign-up or login, and everything you create is stored only in your own browser and never sent to a server.</dd>
+      </dl>
+    </article>
+
+    <section class="family-sites">
+      <h2>Free tools you might also like</h2>
+      <ul class="family-list">
+        <li><a href="https://qr-maker-8q3.pages.dev/" rel="noopener">QR Code Maker — turn links, Wi-Fi, and contacts into QR codes</a></li>
+        <li><a href="https://pixel-art-maker-dsq.pages.dev/" rel="noopener">Pixel Art Maker — draw pixel art and export to PNG</a></li>
+        <li><a href="https://stockcoincalc.pages.dev/" rel="noopener">StockCoinCalc — stock &amp; crypto profit and tax calculator</a></li>
+      </ul>
+    </section>
+    <p class="footer-links">
+      <a href="../about.html">About</a>
+      <a href="../terms.html">Terms</a>
+      <a href="../privacy.html">Privacy</a>
+      <a href="../" hreflang="ko">한국어</a>
+    </p>
+    <p class="copyright">© 2026 Diagram Maker (diagram-maker.pages.dev)</p>
+  </footer>
+
+  <!-- Modals -->
+  <div class="modal hidden" id="modal-start" role="dialog" aria-modal="true" aria-labelledby="modal-start-title">
+    <div class="modal-content">
+      <h2 id="modal-start-title">Welcome to Diagram Maker</h2>
+      <p>Get started with no sign-up. Pick a template or start from a blank canvas.</p>
+      <div class="modal-templates" id="start-templates"></div>
+      <button class="btn btn-ghost btn-block" id="btn-start-blank">Start with a blank canvas</button>
+    </div>
+  </div>
+
+  <div class="modal hidden" id="modal-resume" role="dialog" aria-modal="true" aria-labelledby="modal-resume-title">
+    <div class="modal-content">
+      <h2 id="modal-resume-title">Resume your last work</h2>
+      <p>You have a diagram you were working on. Would you like to continue?</p>
+      <div class="modal-actions">
+        <button class="btn btn-primary" id="btn-resume-yes">Continue</button>
+        <button class="btn btn-ghost" id="btn-resume-no">Start over</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal hidden" id="modal-confirm" role="dialog" aria-modal="true" aria-labelledby="confirm-title">
+    <div class="modal-content">
+      <h2 id="confirm-title">Confirm</h2>
+      <p id="confirm-message"></p>
+      <div class="modal-actions">
+        <button class="btn btn-primary" id="confirm-yes">OK</button>
+        <button class="btn btn-ghost" id="confirm-no">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="context-menu hidden" id="context-menu">
+    <button data-action="edit">Edit text</button>
+    <button data-action="duplicate">Duplicate</button>
+    <button data-action="delete">Delete</button>
+    <button data-action="color">Change color</button>
+  </div>
+
+  <div class="toast hidden" id="toast" role="status" aria-live="polite"></div>
+
+  <!-- html2canvas is lazy-loaded by js/export.js when saving PNG -->
+  <script src="../js/i18n.js" defer></script>
+  <script src="../js/utils.js" defer></script>
+  <script src="../js/history.js" defer></script>
+  <script src="../js/storage.js" defer></script>
+  <script src="../js/templates.js" defer></script>
+  <script src="../js/nodes.js" defer></script>
+  <script src="../js/connections.js" defer></script>
+  <script src="../js/canvas.js" defer></script>
+  <script src="../js/flowchart.js" defer></script>
+  <script src="../js/mindmap.js" defer></script>
+  <script src="../js/export.js" defer></script>
+  <script src="../js/app.js" defer></script>
+</body>
+</html>

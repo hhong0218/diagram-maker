@@ -157,7 +157,7 @@ const App = {
 
   async switchMode(mode) {
     if (mode === this.state.mode) return;
-    const ok = await Utils.showConfirm('모드 전환', '모드 전환 시 캔버스가 초기화됩니다. 계속하시겠습니까?');
+    const ok = await Utils.showConfirm(I18n.t('modeSwitchTitle'), I18n.t('modeSwitchMsg'));
     if (!ok) return;
     this.state.mode = mode;
     this.state.nodes = [];
@@ -268,8 +268,8 @@ const App = {
       try {
         const data = await Export.fromJSON(e.target.files[0]);
         this._loadState(data);
-        Utils.showToast('JSON 불러오기 완료');
-      } catch (err) { Utils.showToast('JSON 파싱 실패'); }
+        Utils.showToast(I18n.t('jsonImported'));
+      } catch (err) { Utils.showToast(I18n.t('jsonParseFail')); }
       e.target.value = '';
     });
 
@@ -304,7 +304,7 @@ const App = {
         if (a === 'edit') {
           const node = this.state.nodes.find(n => this.state.selectedIds.includes(n.id));
           if (node) this._startInlineEdit(node);
-          else Utils.showToast('편집할 노드를 먼저 선택하세요');
+          else Utils.showToast(I18n.t('selectNodeFirst'));
         }
         if (a === 'export') Export.toPNG(false);
         if (a === 'fit') Canvas.fitToContent(this.state.nodes);
@@ -723,7 +723,7 @@ const App = {
     ta.select();
 
     const finish = () => {
-      const newText = ta.value || '텍스트';
+      const newText = ta.value || I18n.t('defaultText');
       if (newText !== node.text) {
         this._saveHistory();
         Nodes.updateText(node, newText);
@@ -754,7 +754,7 @@ const App = {
     input.type = 'text';
     input.className = 'inline-editor inline-editor-label';
     input.value = conn.label || '';
-    input.placeholder = '라벨 입력';
+    input.placeholder = I18n.t('labelPlaceholder');
     const w = 160;
     input.style.width = w + 'px';
     input.style.left = Utils.clamp(sx - w / 2, 8, window.innerWidth - w - 8) + 'px';
@@ -863,7 +863,7 @@ const App = {
     const conns = this.state.connections.filter(c =>
       this.state.selectedIds.includes(c.fromId) && this.state.selectedIds.includes(c.toId));
     this.clipboard = { nodes: Utils.deepClone(nodes), connections: Utils.deepClone(conns) };
-    Utils.showToast('복사됨');
+    Utils.showToast(I18n.t('copied'));
   },
 
   paste() {
@@ -889,7 +889,7 @@ const App = {
     this.state.selectedIds = Object.values(idMap);
     this.render();
     this._checkBadge();
-    Utils.showToast('붙여넣기 완료');
+    Utils.showToast(I18n.t('pasted'));
   },
 
   deleteSelected() {
@@ -922,7 +922,7 @@ const App = {
 
   shareURL() {
     const url = Storage.encodeToURL(this._getSaveState());
-    const ok = () => Utils.showToast('공유 링크가 복사되었습니다!');
+    const ok = () => Utils.showToast(I18n.t('shareCopied'));
     const fallback = () => {
       try {
         const ta = document.createElement('textarea');
@@ -936,7 +936,7 @@ const App = {
         ta.remove();
         if (copied) { ok(); return; }
       } catch (e) { /* fall through to manual copy */ }
-      Utils.showConfirm('공유 링크', url + '\n\n복사에 실패했습니다. 위 주소를 직접 복사해 주세요.');
+      Utils.showConfirm(I18n.t('shareTitle'), url + I18n.t('shareFailSuffix'));
     };
     if (navigator.clipboard && navigator.clipboard.writeText) {
       navigator.clipboard.writeText(url).then(ok).catch(fallback);
