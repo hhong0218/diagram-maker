@@ -3,7 +3,7 @@
         xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>https://diagram-maker.pages.dev/</loc>
-    <lastmod>2026-06-17</lastmod>
+    <lastmod>2026-06-18</lastmod>
     <changefreq>monthly</changefreq>
     <priority>1.0</priority>
     <xhtml:link rel="alternate" hreflang="ko" href="https://diagram-maker.pages.dev/"/>
@@ -12,7 +12,7 @@
   </url>
   <url>
     <loc>https://diagram-maker.pages.dev/en/</loc>
-    <lastmod>2026-06-17</lastmod>
+    <lastmod>2026-06-18</lastmod>
     <changefreq>monthly</changefreq>
     <priority>1.0</priority>
     <xhtml:link rel="alternate" hreflang="ko" href="https://diagram-maker.pages.dev/"/>
@@ -21,9 +21,11 @@
   </url>
   <url>
     <loc>https://diagram-maker.pages.dev/guides/flowchart-basics.html</loc>
-    <lastmod>2026-06-11</lastmod>
+    <lastmod>2026-06-18</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://diagram-maker.pages.dev/guides/flowchart-basics.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://diagram-maker.pages.dev/en/guides/how-to-make-a-flowchart.html"/>
   </url>
   <url>
     <loc>https://diagram-maker.pages.dev/guides/mindmap-howto.html</loc>
@@ -48,6 +50,21 @@
     <lastmod>2026-06-15</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://diagram-maker.pages.dev/guides/decision-tree-howto.html</loc>
+    <lastmod>2026-06-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://diagram-maker.pages.dev/en/guides/how-to-make-a-flowchart.html</loc>
+    <lastmod>2026-06-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://diagram-maker.pages.dev/en/guides/how-to-make-a-flowchart.html"/>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://diagram-maker.pages.dev/guides/flowchart-basics.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://diagram-maker.pages.dev/en/guides/how-to-make-a-flowchart.html"/>
   </url>
   <url>
     <loc>https://diagram-maker.pages.dev/guides/export-to-ppt.html</loc>
