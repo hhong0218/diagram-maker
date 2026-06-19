@@ -2,7 +2,7 @@
 
 회원가입 없이 브라우저에서 바로 사용하는 무료 플로우차트·마인드맵 편집기입니다.
 
-**라이브:** https://diagram-maker.pages.dev
+**라이브:** https://diagram.matchiq.co.kr
 
 ## 기능
 

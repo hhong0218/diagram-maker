@@ -2,90 +2,90 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
         xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>https://diagram-maker.pages.dev/</loc>
+    <loc>https://diagram.matchiq.co.kr/</loc>
     <lastmod>2026-06-18</lastmod>
     <changefreq>monthly</changefreq>
     <priority>1.0</priority>
-    <xhtml:link rel="alternate" hreflang="ko" href="https://diagram-maker.pages.dev/"/>
-    <xhtml:link rel="alternate" hreflang="en" href="https://diagram-maker.pages.dev/en/"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://diagram-maker.pages.dev/"/>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://diagram.matchiq.co.kr/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://diagram.matchiq.co.kr/en/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://diagram.matchiq.co.kr/"/>
   </url>
   <url>
-    <loc>https://diagram-maker.pages.dev/en/</loc>
+    <loc>https://diagram.matchiq.co.kr/en/</loc>
     <lastmod>2026-06-18</lastmod>
     <changefreq>monthly</changefreq>
     <priority>1.0</priority>
-    <xhtml:link rel="alternate" hreflang="ko" href="https://diagram-maker.pages.dev/"/>
-    <xhtml:link rel="alternate" hreflang="en" href="https://diagram-maker.pages.dev/en/"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://diagram-maker.pages.dev/"/>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://diagram.matchiq.co.kr/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://diagram.matchiq.co.kr/en/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://diagram.matchiq.co.kr/"/>
   </url>
   <url>
-    <loc>https://diagram-maker.pages.dev/guides/flowchart-basics.html</loc>
+    <loc>https://diagram.matchiq.co.kr/guides/flowchart-basics.html</loc>
     <lastmod>2026-06-18</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
-    <xhtml:link rel="alternate" hreflang="ko" href="https://diagram-maker.pages.dev/guides/flowchart-basics.html"/>
-    <xhtml:link rel="alternate" hreflang="en" href="https://diagram-maker.pages.dev/en/guides/how-to-make-a-flowchart.html"/>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://diagram.matchiq.co.kr/guides/flowchart-basics.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://diagram.matchiq.co.kr/en/guides/how-to-make-a-flowchart.html"/>
   </url>
   <url>
-    <loc>https://diagram-maker.pages.dev/guides/mindmap-howto.html</loc>
+    <loc>https://diagram.matchiq.co.kr/guides/mindmap-howto.html</loc>
     <lastmod>2026-06-11</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://diagram-maker.pages.dev/guides/work-diagrams.html</loc>
+    <loc>https://diagram.matchiq.co.kr/guides/work-diagrams.html</loc>
     <lastmod>2026-06-11</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://diagram-maker.pages.dev/guides/gantt-chart.html</loc>
+    <loc>https://diagram.matchiq.co.kr/guides/gantt-chart.html</loc>
     <lastmod>2026-06-13</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://diagram-maker.pages.dev/guides/org-chart.html</loc>
+    <loc>https://diagram.matchiq.co.kr/guides/org-chart.html</loc>
     <lastmod>2026-06-15</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://diagram-maker.pages.dev/guides/decision-tree-howto.html</loc>
+    <loc>https://diagram.matchiq.co.kr/guides/decision-tree-howto.html</loc>
     <lastmod>2026-06-18</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://diagram-maker.pages.dev/en/guides/how-to-make-a-flowchart.html</loc>
+    <loc>https://diagram.matchiq.co.kr/en/guides/how-to-make-a-flowchart.html</loc>
     <lastmod>2026-06-18</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
-    <xhtml:link rel="alternate" hreflang="en" href="https://diagram-maker.pages.dev/en/guides/how-to-make-a-flowchart.html"/>
-    <xhtml:link rel="alternate" hreflang="ko" href="https://diagram-maker.pages.dev/guides/flowchart-basics.html"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://diagram-maker.pages.dev/en/guides/how-to-make-a-flowchart.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://diagram.matchiq.co.kr/en/guides/how-to-make-a-flowchart.html"/>
+    <xhtml:link rel="alternate" hreflang="ko" href="https://diagram.matchiq.co.kr/guides/flowchart-basics.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://diagram.matchiq.co.kr/en/guides/how-to-make-a-flowchart.html"/>
   </url>
   <url>
-    <loc>https://diagram-maker.pages.dev/guides/export-to-ppt.html</loc>
+    <loc>https://diagram.matchiq.co.kr/guides/export-to-ppt.html</loc>
     <lastmod>2026-06-15</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://diagram-maker.pages.dev/about.html</loc>
+    <loc>https://diagram.matchiq.co.kr/about.html</loc>
     <lastmod>2026-06-13</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>https://diagram-maker.pages.dev/terms.html</loc>
+    <loc>https://diagram.matchiq.co.kr/terms.html</loc>
     <lastmod>2026-06-13</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
   </url>
   <url>
-    <loc>https://diagram-maker.pages.dev/privacy.html</loc>
+    <loc>https://diagram.matchiq.co.kr/privacy.html</loc>
     <lastmod>2026-06-13</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>

@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://diagram-maker.pages.dev/sitemap.xml
+Sitemap: https://diagram.matchiq.co.kr/sitemap.xml
