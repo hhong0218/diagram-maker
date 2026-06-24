@@ -58,6 +58,18 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://diagram.matchiq.co.kr/guides/flowchart-symbols.html</loc>
+    <lastmod>2026-06-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://diagram.matchiq.co.kr/guides/swimlane-diagram.html</loc>
+    <lastmod>2026-06-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://diagram.matchiq.co.kr/en/guides/how-to-make-a-flowchart.html</loc>
     <lastmod>2026-06-18</lastmod>
     <changefreq>monthly</changefreq>

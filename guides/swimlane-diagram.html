@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>스윔레인 다이어그램 그리는 법 — 담당자별 업무 흐름 정리 | 도식화 메이커</title>
+  <meta name="description" content="스윔레인 다이어그램으로 '누가 무엇을 하는지'를 한 장에 정리하는 법. 레인 나누기, 단계 배치, 부서 간 인수인계 표현, 흔한 실수까지 부서 협업 프로세스를 그리는 순서를 단계별로 설명합니다.">
+  <meta name="keywords" content="스윔레인 다이어그램, 스윔레인 그리는 법, 업무 흐름도, 부서별 프로세스, 담당자 프로세스맵">
+  <meta name="theme-color" content="#1a202c">
+  <link rel="canonical" href="https://diagram.matchiq.co.kr/guides/swimlane-diagram.html">
+  <link rel="icon" type="image/svg+xml" href="../favicon.svg">
+  <meta property="og:title" content="스윔레인 다이어그램 그리는 법 — 담당자별 업무 흐름 정리 | 도식화 메이커">
+  <meta property="og:description" content="스윔레인 다이어그램으로 '누가 무엇을 하는지'를 한 장에 정리하는 법. 레인 나누기, 단계 배치, 부서 간 인수인계 표현을 단계별로 설명합니다.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://diagram.matchiq.co.kr/guides/swimlane-diagram.html">
+  <meta property="og:site_name" content="도식화 메이커">
+  <meta property="og:locale" content="ko_KR">
+  <meta property="og:image" content="https://diagram.matchiq.co.kr/og-image.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="스윔레인 다이어그램 그리는 법 — 담당자별 업무 흐름 정리 | 도식화 메이커">
+  <meta name="twitter:description" content="스윔레인 다이어그램으로 '누가 무엇을 하는지'를 한 장에 정리하는 법. 레인 나누기, 단계 배치, 인수인계 표현을 단계별로 설명합니다.">
+  <meta name="twitter:image" content="https://diagram.matchiq.co.kr/og-image.png">
+  <link rel="stylesheet" href="../css/style.css">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "스윔레인 다이어그램 그리는 법 — 담당자별 업무 흐름 정리",
+    "description": "스윔레인 다이어그램으로 누가 무엇을 하는지를 한 장에 정리하는 순서와 요령을 설명하는 가이드",
+    "inLanguage": "ko",
+    "datePublished": "2026-06-25",
+    "dateModified": "2026-06-25",
+    "author": { "@type": "Organization", "name": "도식화 메이커" },
+    "publisher": { "@type": "Organization", "name": "도식화 메이커", "url": "https://diagram.matchiq.co.kr/" },
+    "mainEntityOfPage": "https://diagram.matchiq.co.kr/guides/swimlane-diagram.html"
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      { "@type": "ListItem", "position": 1, "name": "홈", "item": "https://diagram.matchiq.co.kr/" },
+      { "@type": "ListItem", "position": 2, "name": "스윔레인 다이어그램 그리는 법", "item": "https://diagram.matchiq.co.kr/guides/swimlane-diagram.html" }
+    ]
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "스윔레인 다이어그램과 일반 플로우차트의 차이는 무엇인가요?",
+        "acceptedAnswer": { "@type": "Answer", "text": "일반 플로우차트는 '무슨 순서로' 진행되는지만 보여 주지만, 스윔레인은 가로 또는 세로로 레인을 나눠 각 단계를 '누가(어느 부서가)' 담당하는지까지 함께 보여 줍니다. 부서 간 협업 프로세스에 특히 유용합니다." }
+      },
+      {
+        "@type": "Question",
+        "name": "레인은 가로로 그려야 하나요, 세로로 그려야 하나요?",
+        "acceptedAnswer": { "@type": "Answer", "text": "정답은 없습니다. 흐름이 시간 순으로 길게 이어지면 가로 레인, 단계 수가 적고 담당자가 많으면 세로 레인이 보기 편합니다. 한 다이어그램 안에서는 한 방향으로 통일하는 것이 중요합니다." }
+      },
+      {
+        "@type": "Question",
+        "name": "부서 간 인수인계는 어떻게 표현하나요?",
+        "acceptedAnswer": { "@type": "Answer", "text": "한 레인의 도형에서 다른 레인의 도형으로 화살표가 넘어가는 지점이 인수인계입니다. 레인 경계를 가로지르는 화살표가 많을수록 협업 부담이 크다는 신호이므로, 그 지점을 줄이는 방향으로 프로세스를 개선할 수 있습니다." }
+      }
+    ]
+  }
+  </script>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-9QKMV5JQL5"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-9QKMV5JQL5');
+  </script>
+</head>
+<body>
+  <header class="header">
+    <div class="header-inner">
+      <p class="logo"><a href="../index.html">도식화 메이커</a></p>
+    </div>
+  </header>
+
+  <main class="privacy-page guide-article">
+    <nav class="breadcrumb" aria-label="현재 위치">
+      <a href="../index.html">홈</a> › <span>가이드</span> › <span>스윔레인 다이어그램</span>
+    </nav>
+    <article>
+      <h1>스윔레인 다이어그램 그리는 법 — 담당자별 업무 흐름 정리</h1>
+      <p class="article-meta">도식화 메이커 가이드 · 2026년 6월 25일</p>
+
+      <p>업무 프로세스를 그리다 보면 "이 단계는 도대체 누가 하는 거지?"라는 질문에 막히는 순간이 옵니다. 일반 플로우차트는 일이 진행되는 순서는 보여 주지만, 그 일을 누가 맡는지는 알려 주지 않기 때문입니다. 스윔레인 다이어그램은 바로 이 빈틈을 메웁니다. 수영장 레인처럼 화면을 부서·담당자별 칸으로 나누고, 각 단계 도형을 해당 담당자의 레인 안에 배치해 "누가 무엇을 어떤 순서로 하는지"를 한 장에 담습니다. 이 가이드는 스윔레인의 개념부터 레인 나누는 법, 단계 배치 순서, 부서 간 인수인계 표현, 그리고 초보자가 자주 하는 실수까지 처음 그리는 분 기준으로 단계별로 정리했습니다.</p>
+
+      <h2>1. 스윔레인이란 무엇인가</h2>
+      <p>스윔레인 다이어그램은 플로우차트의 한 종류로, 화면을 가로 띠(레인) 여러 개로 나누고 각 레인에 부서나 담당자 이름을 붙인 형태입니다. 예를 들어 '주문 처리' 프로세스라면 고객, 영업팀, 물류팀, 회계팀으로 레인을 나누고, 각 단계 도형을 그 일을 실제로 하는 부서의 레인 안에 둡니다. 그러면 흐름선이 한 레인에서 다른 레인으로 넘어갈 때마다 "여기서 담당이 바뀐다"는 사실이 한눈에 보입니다. 책임 소재가 모호해 자주 공이 떠넘겨지는 업무를 정리할 때 특히 강력합니다.</p>
+
+      <h2>2. 그리기 전에 정할 두 가지</h2>
+      <p>레인을 그리기 전에 두 가지를 먼저 정하면 다이어그램이 흔들리지 않습니다.</p>
+      <table>
+        <tr><th>결정 사항</th><th>판단 기준</th></tr>
+        <tr><td>레인을 무엇으로 나눌지</td><td>부서 단위로 나눌지, 개인 담당자 단위로 나눌지. 보통 부서 단위가 깔끔합니다.</td></tr>
+        <tr><td>레인 방향</td><td>단계가 시간 순으로 길면 가로 레인, 담당자가 많고 단계가 짧으면 세로 레인.</td></tr>
+      </table>
+      <p>그리고 레인 수는 가능하면 <strong>3~5개 안</strong>으로 유지하는 것이 좋습니다. 레인이 너무 많으면 화살표가 위아래로 자주 건너뛰어 오히려 읽기 어려워집니다.</p>
+
+      <h2>3. 도식화 메이커로 그리는 순서</h2>
+      <p>도식화 메이커에는 스윔레인 전용 모드가 따로 없지만, 사각형과 연결선만으로 표준적인 스윔레인을 그릴 수 있습니다. 권장 순서는 다음과 같습니다.</p>
+      <ol>
+        <li><strong>레인 배경을 먼저 만듭니다.</strong> 가로로 긴 사각형을 담당자 수만큼 위아래로 쌓고, 각 사각형 왼쪽에 부서 이름을 적어 레인 라벨로 씁니다. 채우기 색을 옅게 넣으면 레인 구분이 또렷해집니다.</li>
+        <li><strong>단계 도형을 레인 위에 올립니다.</strong> 각 업무 단계를 사각형(처리)·마름모(판단)로 그려, 그 일을 하는 담당자의 레인 안에 배치합니다.</li>
+        <li><strong>왼쪽에서 오른쪽으로 흐름을 잇습니다.</strong> 시간 순으로 도형을 연결하고, 담당이 바뀌는 지점에서는 화살표가 다른 레인으로 자연스럽게 넘어가게 둡니다.</li>
+        <li><strong>인수인계 지점을 점검합니다.</strong> 레인 경계를 가로지르는 화살표가 곧 인수인계입니다. 그 수가 지나치게 많으면 프로세스를 단순화할 여지가 있다는 신호입니다.</li>
+        <li><strong>전체 보기로 균형을 확인</strong>하고, 한 레인에만 단계가 몰려 있지 않은지 살핍니다.</li>
+      </ol>
+      <p>도형 생성·연결·텍스트 편집 같은 기본 조작은 <a href="flowchart-basics.html">플로우차트 그리는 법</a>과 동일하므로, 처음이라면 그 글을 먼저 보고 오면 빠릅니다.</p>
+
+      <h2>4. 흔한 실수 3가지</h2>
+      <p><strong>첫째, 레인을 너무 잘게 나누는 것.</strong> 개인 단위로 잘게 쪼개면 레인이 10개가 넘어가 화살표가 어지러워집니다. 부서 단위로 묶고, 정말 필요한 경우에만 개인을 표시하세요. <strong>둘째, 단계를 엉뚱한 레인에 두는 것.</strong> "승인"을 실제로 하는 부서가 아니라 요청하는 부서 레인에 그려 두면 책임 소재가 거꾸로 보입니다. 항상 '실제로 그 일을 하는 주체'의 레인에 둡니다. <strong>셋째, 인수인계를 라벨 없이 넘기는 것.</strong> 레인을 넘는 화살표에는 무엇이 전달되는지(예: "주문서 전달") 간단히 적으면 오해가 줄어듭니다.</p>
+
+      <h2>5. 어떤 다이어그램과 함께 쓸까</h2>
+      <table>
+        <tr><th>상황</th><th>추천 다이어그램</th></tr>
+        <tr><td>누가 무엇을 하는지가 핵심일 때</td><td>스윔레인</td></tr>
+        <tr><td>단순히 일의 순서·분기만 보여줄 때</td><td>플로우차트</td></tr>
+        <tr><td>보고 라인과 조직 구조를 보여줄 때</td><td>조직도</td></tr>
+        <tr><td>판단 기준에 따른 선택지를 정리할 때</td><td>의사결정 트리</td></tr>
+      </table>
+      <p>완성한 스윔레인은 PNG로 저장해 PowerPoint·Notion·사내 위키에 붙여넣거나, 공유 링크로 보내 동료가 브라우저에서 바로 열어 확인·수정하게 할 수 있습니다.</p>
+
+      <h2>자주 묻는 질문 (FAQ)</h2>
+      <div class="faq">
+        <p><strong>Q. 스윔레인과 일반 플로우차트의 차이는 무엇인가요?</strong><br>
+        A. 플로우차트는 진행 순서만 보여 주지만, 스윔레인은 레인을 나눠 각 단계를 누가 담당하는지까지 보여 줍니다. 부서 간 협업 프로세스에 특히 유용합니다.</p>
+        <p><strong>Q. 레인은 가로로 그려야 하나요, 세로로 그려야 하나요?</strong><br>
+        A. 흐름이 시간 순으로 길면 가로 레인, 단계가 적고 담당자가 많으면 세로 레인이 편합니다. 한 다이어그램에서는 방향을 하나로 통일하세요.</p>
+        <p><strong>Q. 부서 간 인수인계는 어떻게 표현하나요?</strong><br>
+        A. 한 레인의 도형에서 다른 레인의 도형으로 화살표가 넘어가는 지점이 인수인계입니다. 경계를 가로지르는 화살표가 많을수록 협업 부담이 크다는 신호입니다.</p>
+      </div>
+
+      <div class="cta-box">
+        <p>우리 팀의 협업 프로세스를 한 장으로 정리해 보세요. 회원가입 없이 브라우저에서 바로 시작됩니다.</p>
+        <a class="btn-primary" href="../index.html">무료로 스윔레인 만들기 →</a>
+      </div>
+
+      <section class="related-links">
+        <h2>함께 읽으면 좋은 가이드</h2>
+        <ul>
+          <li><a href="work-diagrams.html">업무에 바로 쓰는 다이어그램 5종 — 조직도·프로세스맵·스윔레인</a></li>
+          <li><a href="flowchart-basics.html">플로우차트 그리는 법 — 기호 의미부터 실무 예제까지</a></li>
+          <li><a href="flowchart-symbols.html">순서도 기호 의미 — 플로우차트 도형별 뜻과 작성법</a></li>
+          <li><a href="org-chart.html">조직도 만들기 — 회사 조직도 그리는 법 완벽 정리</a></li>
+        </ul>
+      </section>
+    </article>
+  </main>
+
+  <footer class="footer">
+    <section class="family-sites">
+      <h2>함께 쓰면 좋은 무료 도구</h2>
+      <ul class="family-list">
+        <li><a href="https://qr.matchiq.co.kr/" rel="noopener">QR코드 만들기 — 링크·와이파이·연락처를 QR로</a></li>
+        <li><a href="https://pixel.matchiq.co.kr/" rel="noopener">픽셀아트 메이커 — 도트 그림을 그리고 PNG로 저장</a></li>
+        <li><a href="https://resume.matchiq.co.kr/" rel="noopener">한국형 이력서 만들기 — 양식에 맞춰 PDF 출력</a></li>
+        <li><a href="https://stockpro.kr/" rel="noopener">StockCoinCalc — 주식·코인 수익률과 세금 계산기</a></li>
+        <li><a href="https://agihanki.matchiq.co.kr/" rel="noopener">아기 이유식 한끼 계산기 — 월령별 한끼 양 계산</a></li>
+      </ul>
+    </section>
+    <p class="footer-links">
+      <a href="flowchart-basics.html">플로우차트 가이드</a>
+      <a href="flowchart-symbols.html">순서도 기호</a>
+      <a href="mindmap-howto.html">마인드맵 가이드</a>
+      <a href="work-diagrams.html">업무 다이어그램</a>
+      <a href="gantt-chart.html">간트차트 가이드</a>
+      <a href="org-chart.html">조직도 가이드</a>
+      <a href="decision-tree-howto.html">의사결정 트리 가이드</a>
+      <a href="swimlane-diagram.html">스윔레인 가이드</a>
+      <a href="export-to-ppt.html">PPT에 넣기</a>
+      <a href="../about.html">서비스 소개</a>
+      <a href="../terms.html">이용약관</a>
+      <a href="../privacy.html">개인정보처리방침</a>
+    </p>
+    <p class="copyright">© 2026 도식화 메이커</p>
+  </footer>
+</body>
+</html>
