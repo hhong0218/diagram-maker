@@ -6,6 +6,10 @@ const Export = {
     a.download = filename;
     a.click();
     URL.revokeObjectURL(a.href);
+    if (typeof gtag === 'function') {
+      const fmt = (filename.split('.').pop() || '').toLowerCase();
+      gtag('event', 'diagram_export', { format: fmt });
+    }
   },
 
   toJSON(state) {
@@ -159,6 +163,7 @@ const Export = {
         a.download = filename;
         a.click();
         URL.revokeObjectURL(a.href);
+        if (typeof gtag === 'function') { gtag('event', 'diagram_export', { format: 'png' }); }
         Utils.showToast(I18n.t('pngDone'));
       });
     } catch (e) {
