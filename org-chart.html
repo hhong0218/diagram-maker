@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>조직도 메이커 — 자동 정렬 조직도 만들기 | 도식화 메이커</title>
+  <meta name="description" content="회사 조직도를 무료로 만드세요. 상급자에 하위·동료를 추가하면 자동으로 정렬됩니다. 이름·직책 카드, PNG·SVG·JSON 내보내기, 회원가입 불필요.">
+  <meta name="keywords" content="조직도 메이커, 조직도 만들기, 조직도 자동 정렬, 조직도 무료, 회사 조직도 도구">
+  <meta name="theme-color" content="#1a202c">
+  <link rel="canonical" href="https://diagram.matchiq.co.kr/org-chart.html">
+  <link rel="alternate" hreflang="ko" href="https://diagram.matchiq.co.kr/org-chart.html">
+  <link rel="alternate" hreflang="en" href="https://diagram.matchiq.co.kr/en/org-chart.html">
+  <link rel="alternate" hreflang="x-default" href="https://diagram.matchiq.co.kr/org-chart.html">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <meta property="og:title" content="조직도 메이커 — 자동 정렬 조직도 만들기 | 도식화 메이커">
+  <meta property="og:description" content="상급자에 하위·동료를 추가하면 자동으로 정렬되는 무료 조직도 도구. 회원가입 없이 바로 시작하세요.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://diagram.matchiq.co.kr/org-chart.html">
+  <meta property="og:site_name" content="도식화 메이커">
+  <meta property="og:locale" content="ko_KR">
+  <meta property="og:image" content="https://diagram.matchiq.co.kr/og-image.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="조직도 메이커 — 자동 정렬 조직도 만들기 | 도식화 메이커">
+  <meta name="twitter:description" content="상급자에 하위·동료를 추가하면 자동으로 정렬되는 무료 조직도 도구. 회원가입 없이 바로 시작하세요.">
+  <meta name="twitter:image" content="https://diagram.matchiq.co.kr/og-image.png">
+  <link rel="stylesheet" href="css/style.css">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "조직도 메이커",
+    "alternateName": "Org Chart Maker",
+    "url": "https://diagram.matchiq.co.kr/org-chart.html",
+    "description": "브라우저에서 바로 회사 조직도를 만드는 무료 웹 앱. 하위·동료 추가 시 자동 정렬되며, 회원가입 없이 PNG, SVG, JSON으로 저장할 수 있습니다.",
+    "applicationCategory": "DesignApplication",
+    "operatingSystem": "Web",
+    "inLanguage": "ko",
+    "isAccessibleForFree": true,
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "KRW" },
+    "featureList": [
+      "이름·직책 카드형 노드",
+      "하위·동료 추가 시 자동 트리 정렬",
+      "PNG·SVG·JSON 내보내기",
+      "자동 저장",
+      "공유 링크"
+    ]
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "조직도가 자동으로 정렬되나요?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "네. 노드를 선택하고 '하위 추가' 또는 '동료 추가'를 누르면 새 노드가 상하 계층에 맞춰 자동으로 배치되고 연결선도 자동으로 그려집니다. 직접 드래그해서 위치를 맞출 필요가 없습니다."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "일반 사각형 대신 조직도 전용 카드를 쓰는 이유가 뭔가요?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "조직도 카드는 이름과 직책을 별도 줄로 입력하도록 되어 있어 정보가 항상 같은 형식으로 정렬됩니다. 이름은 굵게, 직책은 옅은 색 작은 글씨로 표시되어 일반 플로우차트 사각형보다 조직도 용도에 적합합니다."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "완성한 조직도는 어떻게 저장하나요?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "PNG, SVG, JSON 형식으로 저장할 수 있습니다. PNG는 발표자료·문서에 붙여넣기 좋고, SVG는 고해상도 인쇄에, JSON은 백업과 재편집에 적합합니다. 공유 링크를 복사해 다른 사람과 함께 볼 수도 있습니다."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "모바일에서도 조직도를 만들 수 있나요?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "네, 브라우저만 있으면 PC와 모바일 모두에서 작동합니다. 화면 아래 툴바로 하위 노드 추가와 텍스트 편집을 할 수 있습니다."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "회원가입이 필요한가요?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "필요하지 않습니다. 회원가입과 로그인 없이 바로 작업을 시작할 수 있으며, 작성한 내용은 사용자 브라우저에만 저장되어 서버로 전송되지 않습니다."
+        }
+      }
+    ]
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      { "@type": "ListItem", "position": 1, "name": "홈", "item": "https://diagram.matchiq.co.kr/" },
+      { "@type": "ListItem", "position": 2, "name": "조직도 메이커", "item": "https://diagram.matchiq.co.kr/org-chart.html" }
+    ]
+  }
+  </script>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-9QKMV5JQL5"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-9QKMV5JQL5');
+  </script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2324533526355362" crossorigin="anonymous"></script>
+</head>
+<body>
+  <header class="header">
+    <div class="header-inner">
+      <p class="logo"><a href="index.html">도식화 메이커</a></p>
+      <nav class="mode-tabs" aria-label="조직도 메이커">
+        <span class="mode-tab active" aria-current="page">조직도</span>
+      </nav>
+      <div class="header-actions">
+        <button class="btn btn-ghost" id="btn-undo" title="Ctrl+Z">↩ 되돌리기</button>
+        <button class="btn btn-ghost" id="btn-redo" title="Ctrl+Y">↪ 다시실행</button>
+        <button class="btn btn-primary" id="btn-share">공유 링크 복사</button>
+        <a class="btn btn-ghost lang-switch" href="/en/org-chart.html" hreflang="en" title="English version">English</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="workspace">
+    <aside class="panel panel-left" id="panel-left">
+      <section class="panel-section">
+        <h3>조직 구성</h3>
+        <button class="btn btn-block btn-primary" id="btn-add-child">+ 하위 추가</button>
+        <button class="btn btn-block" id="btn-add-peer">+ 동료 추가</button>
+      </section>
+      <section class="panel-section">
+        <h3>캔버스</h3>
+        <label class="toggle"><input type="checkbox" id="toggle-grid" checked> 격자 표시</label>
+        <button class="btn btn-block" id="btn-fit-view">전체 보기 (Ctrl+0)</button>
+      </section>
+      <div class="guide-tip">
+        <p>💡 <strong>사용법:</strong> 노드를 선택하고 "하위 추가"를 누르면 자동으로 아래에 정렬됩니다. 더블클릭(모바일은 더블탭)으로 이름·직책을 입력하세요.</p>
+      </div>
+    </aside>
+
+    <div class="canvas-wrap" id="canvas-wrap">
+      <svg id="diagram-svg" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <pattern id="grid-pattern" width="20" height="20" patternUnits="userSpaceOnUse">
+            <circle cx="1" cy="1" r="1" fill="#4a5568"/>
+          </pattern>
+        </defs>
+        <g id="viewport">
+          <rect id="grid-bg" class="grid-bg" x="-5000" y="-5000" width="10000" height="10000" fill="url(#grid-pattern)"/>
+          <g id="connections-layer"></g>
+          <g id="nodes-layer"></g>
+          <g id="overlay-layer"></g>
+        </g>
+      </svg>
+      <div class="zoom-controls">
+        <button id="zoom-in" title="Ctrl++" aria-label="확대">+</button>
+        <span id="zoom-level">100%</span>
+        <button id="zoom-out" title="Ctrl+-" aria-label="축소">−</button>
+      </div>
+    </div>
+
+    <aside class="panel panel-right" id="panel-right">
+      <section class="panel-section">
+        <h3>저장 / 내보내기</h3>
+        <button class="btn btn-block" id="btn-export-png">PNG 저장 (현재 뷰)</button>
+        <button class="btn btn-block" id="btn-export-png-full">PNG 저장 (전체)</button>
+        <button class="btn btn-block" id="btn-export-svg">SVG 저장</button>
+        <button class="btn btn-block" id="btn-export-json">JSON 저장</button>
+        <label class="btn btn-block btn-file">
+          JSON 불러오기
+          <input type="file" id="import-json" accept=".json" hidden>
+        </label>
+      </section>
+      <div class="guide-tip">
+        <p>💡 <strong>팁:</strong> 완성한 조직도는 PNG로 저장해 발표자료나 사내 위키에 붙여넣으세요.</p>
+      </div>
+    </aside>
+  </main>
+
+  <div class="mobile-toolbar" id="mobile-toolbar">
+    <button data-action="undo" aria-label="되돌리기">↩</button>
+    <button data-action="add-child" aria-label="하위 추가">+</button>
+    <button data-action="edit" aria-label="선택한 노드 편집">✏️</button>
+    <button data-action="export" aria-label="PNG 저장">💾</button>
+    <button data-action="fit" aria-label="전체 보기">⊡</button>
+    <button data-action="share" aria-label="공유 링크 복사">🔗</button>
+  </div>
+
+  <footer class="footer">
+    <article class="guide-content">
+      <h1 style="font-size:1.3rem; margin-bottom:0.75rem;">조직도 메이커 — 자동 정렬 조직도 도구</h1>
+      <p>조직도 메이커는 회사 조직도를 빠르게 만드는 전용 도구입니다. 최상위 노드(대표 또는 본부장)에서 시작해 "하위 추가"로 팀원을 붙이면 트리 구조가 자동으로 정렬됩니다. 같은 관리자 아래 동료를 추가할 때는 "동료 추가"를 쓰면 됩니다. 도형 위치를 손으로 옮기거나 높이를 맞출 필요가 없습니다 — 일반 사각형과 선으로 조직도를 조립하는 방식보다 훨씬 빠릅니다.</p>
+      <p>각 노드는 이름과 직책을 별도 줄로 입력하는 카드형입니다. 이름은 굵게, 직책은 옅은 색 작은 글씨로 표시되어 한눈에 구분됩니다. 완성한 조직도는 PNG·SVG·JSON으로 저장하거나 공유 링크로 전달할 수 있으며, 회원가입이나 설치 없이 브라우저에서 바로 작동합니다.</p>
+
+      <h2>자주 묻는 질문</h2>
+      <dl class="faq-list">
+        <dt>조직도가 자동으로 정렬되나요?</dt>
+        <dd>네. 노드를 선택하고 "하위 추가" 또는 "동료 추가"를 누르면 새 노드가 상하 계층에 맞춰 자동으로 배치되고 연결선도 자동으로 그려집니다. 직접 드래그해서 위치를 맞출 필요가 없습니다.</dd>
+        <dt>일반 사각형 대신 조직도 전용 카드를 쓰는 이유가 뭔가요?</dt>
+        <dd>조직도 카드는 이름과 직책을 별도 줄로 입력하도록 되어 있어 정보가 항상 같은 형식으로 정렬됩니다. 이름은 굵게, 직책은 옅은 색 작은 글씨로 표시되어 일반 플로우차트 사각형보다 조직도 용도에 적합합니다.</dd>
+        <dt>완성한 조직도는 어떻게 저장하나요?</dt>
+        <dd>PNG, SVG, JSON 형식으로 저장할 수 있습니다. PNG는 발표자료·문서에 붙여넣기 좋고, SVG는 고해상도 인쇄에, JSON은 백업과 재편집에 적합합니다. 공유 링크를 복사해 다른 사람과 함께 볼 수도 있습니다.</dd>
+        <dt>모바일에서도 조직도를 만들 수 있나요?</dt>
+        <dd>네, 브라우저만 있으면 PC와 모바일 모두에서 작동합니다. 화면 아래 툴바로 하위 노드 추가와 텍스트 편집을 할 수 있습니다.</dd>
+        <dt>회원가입이 필요한가요?</dt>
+        <dd>필요하지 않습니다. 회원가입과 로그인 없이 바로 작업을 시작할 수 있으며, 작성한 내용은 사용자 브라우저에만 저장되어 서버로 전송되지 않습니다.</dd>
+      </dl>
+    </article>
+
+    <section class="family-sites">
+      <h2>함께 쓰면 좋은 무료 도구</h2>
+      <ul class="family-list">
+        <li><a href="guides/org-chart.html">조직도 가이드 — 조직 구조 유형과 보고 라인 표기법</a></li>
+        <li><a href="https://qr.matchiq.co.kr/" rel="noopener">QR코드 만들기 — 링크·와이파이·연락처를 QR로</a></li>
+        <li><a href="https://pixel.matchiq.co.kr/" rel="noopener">픽셀아트 메이커 — 도트 그림을 그리고 PNG로 저장</a></li>
+        <li><a href="https://resume.matchiq.co.kr/" rel="noopener">한국형 이력서 만들기 — 양식에 맞춰 PDF 출력</a></li>
+        <li><a href="https://stockpro.kr/" rel="noopener">StockCoinCalc — 주식·코인 수익률과 세금 계산기</a></li>
+      </ul>
+    </section>
+    <p class="footer-links">
+      <a href="index.html">플로우차트·마인드맵</a>
+      <a href="guides/org-chart.html">조직도 가이드</a>
+      <a href="guides/flowchart-basics.html">플로우차트 가이드</a>
+      <a href="guides/mindmap-howto.html">마인드맵 가이드</a>
+      <a href="about.html">서비스 소개</a>
+      <a href="terms.html">이용약관</a>
+      <a href="privacy.html">개인정보처리방침</a>
+    </p>
+    <p class="copyright">© 2026 도식화 메이커 (diagram.matchiq.co.kr)</p>
+  </footer>
+
+  <div class="modal hidden" id="modal-confirm" role="dialog" aria-modal="true" aria-labelledby="confirm-title">
+    <div class="modal-content">
+      <h2 id="confirm-title">확인</h2>
+      <p id="confirm-message"></p>
+      <div class="modal-actions">
+        <button class="btn btn-primary" id="confirm-yes">확인</button>
+        <button class="btn btn-ghost" id="confirm-no">취소</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="context-menu hidden" id="context-menu">
+    <button data-action="edit">텍스트 편집</button>
+    <button data-action="add-child">하위 추가</button>
+    <button data-action="add-peer">동료 추가</button>
+    <button data-action="delete">삭제</button>
+    <button data-action="color">색상 변경</button>
+  </div>
+
+  <div class="toast hidden" id="toast" role="status" aria-live="polite"></div>
+
+  <!-- html2canvas는 PNG 저장 시 js/export.js에서 지연 로드됩니다 -->
+  <script src="js/i18n.js" defer></script>
+  <script src="js/utils.js" defer></script>
+  <script src="js/history.js" defer></script>
+  <script src="js/storage.js" defer></script>
+  <script src="js/nodes.js" defer></script>
+  <script src="js/connections.js" defer></script>
+  <script src="js/canvas.js" defer></script>
+  <script src="js/orgchart.js" defer></script>
+  <script src="js/export.js" defer></script>
+  <script src="js/orgchart-app.js" defer></script>
+</body>
+</html>

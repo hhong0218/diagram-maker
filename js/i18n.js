@@ -23,7 +23,17 @@ const I18n = {
       pngDone: 'PNG 저장 완료!',
       pngFailMsg: 'PNG 저장 실패: ',
       newNode: '새 노드',
-      centerTopic: '중심 주제'
+      centerTopic: '중심 주제',
+      orgDefaultName: '이름',
+      orgDefaultTitle: '직책',
+      orgAddChild: '+ 하위 추가',
+      orgAddPeer: '+ 동료 추가',
+      orgSelectFirst: '먼저 노드를 선택하세요',
+      orgPeerNeedsParent: '최상위 노드에는 동료를 추가할 수 없습니다',
+      orgNamePlaceholder: '이름',
+      orgTitlePlaceholder: '직책',
+      orgDeleteConfirmTitle: '삭제 확인',
+      orgDeleteConfirmMsg: '선택한 노드와 하위 조직이 모두 삭제됩니다. 계속하시겠습니까?'
     },
     en: {
       modeSwitchTitle: 'Switch mode',
@@ -43,7 +53,17 @@ const I18n = {
       pngDone: 'PNG saved!',
       pngFailMsg: 'PNG export failed: ',
       newNode: 'New node',
-      centerTopic: 'Central topic'
+      centerTopic: 'Central topic',
+      orgDefaultName: 'Name',
+      orgDefaultTitle: 'Title',
+      orgAddChild: '+ Add Report',
+      orgAddPeer: '+ Add Peer',
+      orgSelectFirst: 'Select a node first',
+      orgPeerNeedsParent: 'Cannot add a peer to the top-level node',
+      orgNamePlaceholder: 'Name',
+      orgTitlePlaceholder: 'Title',
+      orgDeleteConfirmTitle: 'Confirm delete',
+      orgDeleteConfirmMsg: 'This will delete the selected node and everyone under it. Continue?'
     }
   },
 

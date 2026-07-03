@@ -86,16 +86,27 @@ const Export = {
       const cx = n.x + n.width / 2;
       const cy = n.y + n.height / 2;
       svg += `<path d="${d}" fill="${esc(n.fillColor)}" stroke="${esc(n.strokeColor)}" stroke-width="2"/>`;
-      const lines = String(n.text).split('\n');
-      let content;
-      if (lines.length === 1) {
-        content = esc(n.text);
+
+      if (n.type === 'orgchart') {
+        // Same top accent bar + two-tier name/title layout as the live
+        // renderer (js/nodes.js), so exported SVG/PNG matches on-screen.
+        svg += `<rect x="${n.x + 2}" y="${n.y + 2}" width="${n.width - 4}" height="3" rx="1.5" fill="${esc(n.strokeColor)}"/>`;
+        svg += `<text x="${cx}" y="${cy}" text-anchor="middle" dominant-baseline="central">`;
+        svg += `<tspan x="${cx}" dy="-7" fill="#f7fafc" font-size="13" font-weight="600">${esc(n.name)}</tspan>`;
+        svg += `<tspan x="${cx}" dy="16" fill="#a0aec0" font-size="11" font-weight="400">${esc(n.title)}</tspan>`;
+        svg += `</text>`;
       } else {
-        // Same multi-line layout as the live renderer (js/nodes.js)
-        content = lines.map((line, i) =>
-          `<tspan x="${cx}" dy="${i === 0 ? -(lines.length - 1) * 8 : 16}">${esc(line)}</tspan>`).join('');
+        const lines = String(n.text).split('\n');
+        let content;
+        if (lines.length === 1) {
+          content = esc(n.text);
+        } else {
+          // Same multi-line layout as the live renderer (js/nodes.js)
+          content = lines.map((line, i) =>
+            `<tspan x="${cx}" dy="${i === 0 ? -(lines.length - 1) * 8 : 16}">${esc(line)}</tspan>`).join('');
+        }
+        svg += `<text x="${cx}" y="${cy}" fill="#f7fafc" font-size="13" text-anchor="middle" dominant-baseline="central">${content}</text>`;
       }
-      svg += `<text x="${cx}" y="${cy}" fill="#f7fafc" font-size="13" text-anchor="middle" dominant-baseline="central">${content}</text>`;
     });
 
     svg += '</g></svg>';

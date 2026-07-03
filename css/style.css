@@ -354,6 +354,12 @@ a:hover { text-decoration: underline; }
 }
 .node-group.selected .resize-handle { opacity: 1; }
 
+/* Org chart cards: bold name + lighter title subline, distinct from the
+   generic .node-text used by flowchart/mindmap nodes. */
+.node-text-name { font-weight: 600; font-size: 13px; fill: var(--text-primary); }
+.node-text-title { font-weight: 400; font-size: 11px; fill: var(--text-secondary); }
+.node-accent-bar { pointer-events: none; }
+
 /* Enlarged invisible grab area around the resize handle (touch) */
 .resize-hit {
   fill: transparent;
@@ -454,6 +460,30 @@ a:hover { text-decoration: underline; }
 }
 
 .inline-editor-label { height: 36px; }
+
+/* Org chart inline editor: two stacked inputs (name, title) instead of
+   the single textarea used by flowchart/mindmap nodes. */
+.org-inline-editor {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 6px 8px;
+  text-align: left;
+}
+.org-inline-editor input {
+  border: 1px solid var(--border);
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  border-radius: 3px;
+  padding: 3px 6px;
+  font-size: 13px;
+  font-family: inherit;
+  outline: none;
+  text-align: center;
+}
+.org-inline-editor input.org-inline-name { font-weight: 600; }
+.org-inline-editor input.org-inline-title { font-size: 11px; color: var(--text-secondary); }
+.org-inline-editor input:focus { border-color: var(--accent); }
 
 /* Programmatically opened native color picker (context menu → 색상 변경) */
 .hidden-color-input {
